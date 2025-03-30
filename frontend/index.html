@@ -1,0 +1,82 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TrustedCert</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+
+
+<!-- <div id="entirePage"> -->
+    <!-- Shared Header -->
+    <header>
+      <div class="branding">
+          <img src="images/trusted_cert_logo.png" alt="Logo" class="logo" />
+          <div class="branding-text">
+              <h1>TrustedCert</h1>
+              <p>Decentralized Certificate Issuance & Verification</p>
+          </div>
+      </div>
+      <div class="wallet-container">
+          <button id="connectBtn">
+              <p id="walletStatus">🔴 Connect Wallet</p>
+          </button>
+      </div>
+  </header>
+  
+  
+  <!-- Loading Overlay -->
+  <div id="loadingOverlayRole" style="display: none">
+    <div id="loadingIndicator">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
+      <p>Verifying Role...</p>
+    </div>
+  </div>
+
+  <div id="app_header">
+     <!-- DYNAMIC CONTENT AREA That grows -->
+  </div>
+  <div id="app">
+    <!-- DYNAMIC CONTENT AREA That grows -->
+ </div>
+
+
+
+<!-- </div> -->
+
+<footer>
+  <p>TrustedCert &copy; 2025 | Powered by Ethereum & IPFS</p>
+</footer>
+
+
+
+
+  <!-- Scripts -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- Load config before main logic -->
+    <script type="module" src="config.js"></script>
+
+
+    <script defer type="module" src="js/index.js"></script>
+    <!-- Always load verify.js on page load -->
+     <script defer type="module" src="js/verify.js"></script>
+
+     
+     
+
+</body>
+</html

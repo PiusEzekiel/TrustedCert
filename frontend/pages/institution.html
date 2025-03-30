@@ -1,0 +1,65 @@
+<!-- pages/institution.html -->
+<div class="dashboard-header">
+<h3>Institution Dashboard</h3>
+<p>Welcome, Registrar! Register and Manage certificates.</p>
+</div>
+
+<!-- Institution Information -->
+ <div class="institution-info">
+    <p><strong>Institution:</strong> <span id="instName">Loading...</span></p>
+    <p><strong>Description:</strong> <span id="instDesc">Loading...</span></p>
+    <p><strong>Wallet Address:</strong> <span id="instWallet">Loading...</span></p>
+  </div>
+
+  <div id="loadingIndicatorRegistering" style="display: none;" >
+    <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." width="100">
+    
+    <p>Registering Certificate...</p>
+  </div>
+  
+<!-- <div id="institutionArea"> -->
+
+  <!-- TAB NAVIGATION -->
+  <div class="tabs">
+    <button class="tab-button active" data-tab="registerTab">📜 Register Certificate</button>
+    <button class="tab-button" data-tab="manageTab">🔍 Manage Certificates</button>
+    
+  </div>
+
+
+
+  <!-- Register Certificate Section -->
+  <div class="tab-content active" id="registerTab">
+    <h2>Register Certificate</h2>
+    <input type="text" id="recipientName" placeholder="Recipient Name" />
+    <input type="text" id="title" placeholder="Certificate Title" />
+    <div id="previewArea">
+      <input type="file" id="certificateFile" placeholder="Choose a file"/>
+    </div>
+
+    <!-- <input type="file" id="certificateFile" /> -->
+    <input type="text" id="externalId" placeholder="Optional External ID" />
+
+    <!-- <div id="previewArea"></div> -->
+    <!-- <p id="cidDisplay"></p> -->
+    <button class="button-action" id="registerBtn" disabled>Register Certificate</button>
+  </div>
+
+
+  <ul id="registeredCert"></ul>
+
+  <!-- Manage Certificates Section -->
+  <div class="tab-content" id="manageTab">
+    <h2>My Issued Certificates</h2>
+    <input type="text" id="searchCertificates" placeholder="🔍 Search by Name or Title" />
+
+    <button class="button-action" id="loadCertsBtn">Refresh Issued Certificates</button>
+
+    <div id="certificateStats">
+      <p><strong>Total Certificates:</strong> <span id="totalCerts">0</span></p>
+      <p><strong>Revoked Certificates:</strong> <span id="revokedCerts">0</span></p>
+    </div>
+
+    <div id="certificateList"></div>
+  </div>
+

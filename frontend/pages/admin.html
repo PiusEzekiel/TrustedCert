@@ -1,0 +1,76 @@
+<div class="dashboard-header">
+<h3>Admin Dashboard</h3>
+<p>Welcome, admin! Manage institutions and certificates.</p>
+</div>
+
+<!-- TAB NAVIGATION -->
+<div class="tabs">
+  <button class="tab-button active" data-tab="institutions">🏛️ Institutions</button>
+  <button class="tab-button" data-tab="certificates">Certificates</button>
+  <button class="tab-button" data-tab="statistics">Statistics</button>
+  <button class="tab-button" data-tab="settings">⚙️ Settings</button>
+</div>
+
+<!-- TAB CONTENT -->
+
+<!-- Manage Institutions -->
+<div class="tab-content active" id="institutions">
+  <h2>Appove Institution</h2>
+  <input  id="institutionName" placeholder="Institution Name" />
+  <input id="institutionDesc" placeholder="Short Description" />
+  <input id="institutionAddress" placeholder="Institution Wallet Address" />
+  <button class="button-action" id="assignRoleBtn">Assign Role</button>
+
+  <hr class="divider" />
+
+  <h2>Revoke Institution</h2>
+  <input id="revokeAddress" placeholder="Institution Wallet Address" />
+  <button class="button-action" id="revokeRoleBtn">Revoke Role</button>
+</div>
+
+
+
+<!-- View Certificates -->
+<div class="tab-content" id="certificates">
+
+  <!-- <h2>Revoke Certificate</h2>
+<div>
+  <input id="revokeCertId" placeholder="Enter Certificate ID" />
+  <button class="button-action revoke-button" id="revokeCertBtn">❌ Revoke Certificate</button>
+</div>
+  <hr class="divider" /> -->
+
+  <h2>All Registered Certificates</h2>
+  <div>
+  <input id="searchCertificates" placeholder="🔍 Search by Recipient or Cert ID..." />
+  <button class="button-action"  id="loadAllCertsBtn">📜 Refresh Certificates List</button>
+</div>
+  <ul id="certificateList"></ul>
+
+  
+
+</div>
+
+<!-- Statistics -->
+<div class="tab-content" id="statistics">
+  <h2>Registered Institutions</h2>
+  <input id="searchInstitutions" placeholder="🔍 Search Institution Address..." />
+  <button class="button-action" id="viewInstitutionsBtn">🔍 View Institutions</button>
+  <ul id="institutionList"></ul>
+  
+  <hr class="divider" />
+
+  <h2>📊 Platform Statistics</h2>
+  <p><strong>Total Institutions:</strong> <span id="totalInstitutions">0</span></p>
+  <p><strong>Total Certificates Issued:</strong> <span id="totalCertificates">0</span></p>
+  <p><strong>Total Revoked Certificates:</strong> <span id="revokedCertificates">0</span></p>
+
+</div>
+
+<!-- Settings -->
+<div class="tab-content" id="settings">
+  <h2>Pause/Resume Contract</h2>
+  <button class="button-action revoke-button" id="pauseBtn">⏸️ Pause Contract</button>
+  <button class="button-action" id="unpauseBtn">▶️ Resume Contract</button>
+  <p id="contractStatus">Status: <span>Loading...</span></p>
+</div>
