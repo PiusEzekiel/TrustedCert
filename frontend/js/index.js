@@ -3,7 +3,7 @@
 let CONTRACT_ADDRESS, PINATA_JWT;
 
 async function loadConfig() {
-  const res = await fetch("https://your-backend-url.onrender.com/config");
+  const res = await fetch("https://trustedcert-backend.onrender.com/config");
   const config = await res.json();
   CONTRACT_ADDRESS = config.contractAddress;
   PINATA_JWT = config.pinataJWT;
