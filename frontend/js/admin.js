@@ -1,4 +1,17 @@
-import { CONTRACT_ADDRESS } from "../config.js";
+// import { CONTRACT_ADDRESS } from "../config.js";
+
+let CONTRACT_ADDRESS, PINATA_JWT;
+
+async function loadConfig() {
+  const res = await fetch("https://trustedcert-backend.onrender.com/config");
+  const config = await res.json();
+  CONTRACT_ADDRESS = config.contractAddress;
+  PINATA_JWT = config.pinataJWT;
+}
+
+await loadConfig();
+
+
 
 let provider, signer, contract;
 
