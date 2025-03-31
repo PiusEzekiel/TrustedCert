@@ -16,7 +16,7 @@ await loadConfig();
 let contract;
 
 // ✅ Ensure script waits until content is fully loaded
-document.addEventListener("DOMContentLoaded", async () => {
+// document.addEventListener("DOMContentLoaded", async () => {
   const provider = new ethers.providers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/PSyOkmTF8dSBO9VA2dDXPxjBJJfUblcy");
 
   const res = await fetch("./abi/CertificateRegistry.json");
@@ -28,17 +28,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ✅ Retry finding verifyBtn after #app is updated
   function attachVerifyButton() {
+    console.log("🔍 Looking for #verifyBtn...");
+
     const verifyBtn = document.getElementById("verifyBtn");
     const resultDiv = document.getElementById("result");
 
 
     if (!verifyBtn) {
-      // console.warn("⏳ Waiting for verify button...");
+      console.warn("⏳ Waiting for verify button...");
       setTimeout(attachVerifyButton, 500); // Retry in 500ms
       return;
     }
 
-    // console.log("✅ verifyBtn found!");
+    console.log("✅ verifyBtn found!");
     verifyBtn.onclick = async () => {
       const certId = document.getElementById("certId").value.trim();
       resultDiv.innerHTML = "";
@@ -128,4 +130,4 @@ document.getElementById("loadingOverlayVerify").style.display = "none"; // Hide
 
   // ✅ Wait for the page to load, then attach event listener
   attachVerifyButton();
-});
+// });

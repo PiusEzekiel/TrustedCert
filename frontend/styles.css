@@ -859,7 +859,7 @@ footer {
         width: 100%;
         max-width: 100%;
         padding: 20px;
-        flex-direction: column; /* Stack elements vertically */
+        /* flex-direction: column; Stack elements vertically */
         align-items: center; /* Center items */
         word-wrap: break-word;
 
@@ -878,6 +878,24 @@ footer {
       }
       h2, h3 {
         font-size: 1rem;
+      }
+
+      h2 {
+        /* font-size: 1.5rem; */
+        font-weight: 1200;
+        text-align: left;
+        display: flex;
+        align-items: start;
+        width: 57%;
+      background: #0a3d62;
+      color: white;
+      border: none;
+      padding: 5px 2px 2px 10px;
+      border-radius: 5px;
+      border-left:  12px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 4px solid rgba(255, 255, 255, 0.2);
+      white-space: nowrap;
+        overflow: hidden;
       }
   
     input, button, p, .cert-card p, .cert-card h3, .cert-card a, .cert-details p, .document-item p{
@@ -924,6 +942,7 @@ footer {
       overflow-x: hidden;
       padding: 5px 2px;
     }
+
     .dashboard-header h3, .branding-text h1 {
       font-size: 1.2rem;
     }

@@ -9,13 +9,14 @@ async function loadConfig() {
   PINATA_JWT = config.pinataJWT;
 }
 
-await loadConfig();
+// await loadConfig();
 
 
 // Global setup
 let provider, signer, contract;
 
 window.onload = async () => {
+  await loadConfig();
 
   loadPage("verify"); // Show verify page by default
   const connectBtn = document.getElementById("connectBtn");
@@ -77,6 +78,8 @@ window.onload = async () => {
 // ✅ Determine Role & Load Page
 async function determineUserRole(address) {
   try {
+
+
     const appDiv = document.getElementById("app");
 
     appDiv.innerHTML = ""; // Clear the app div while loading
@@ -114,19 +117,28 @@ async function loadPage(role) {
     const res = await fetch(`pages/${role}.html`);
     const html = await res.text();
     document.getElementById("app").innerHTML = html;
-    // document.getElementById("entirePage").innerHTML = html; // Load the page into the entirePage div
 
-    // ✅ Load the corresponding JS file
+    console.log(`✅ Loaded ${role}.html into #app`);
+
+    // ✅ Now dynamically load the role's script
     const script = document.createElement("script");
     script.src = `js/${role}.js`;
     script.type = "module";
-    script.defer = true;
+
+    // ⛔ DO NOT use defer — it doesn’t work on dynamically created scripts
+    // script.defer = true;
+
+    script.onload = () => console.log(`✅ ${role}.js loaded`);
+    script.onerror = () => console.error(`❌ Failed to load js/${role}.js`);
+    
     document.body.appendChild(script);
+
   } catch (error) {
     console.error(`Error loading ${role} page:`, error);
     showToast("❌ Failed to load page", "error");
   }
 }
+
 
 // ✅ Toast Notification Function
 window.showToast = function(message, type) {
