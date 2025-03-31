@@ -135,7 +135,7 @@ function enableInstitutionActions() {
     const title = document.getElementById("title").value.trim();
     const externalId = document.getElementById("externalId").value.trim();
     const previewArea = document.getElementById("previewArea");
-    const loadingIndicator = document.getElementById("loadingIndicatorRegistering");
+    // const loadingIndicator = document.getElementById("loadingIndicatorRegistering");
 
     if (!uploadedCID) {
         showToast("❌ Please upload a certificate file first!", "warning");
@@ -144,7 +144,11 @@ function enableInstitutionActions() {
 
     try {
         // ✅ Show loading indicator
-        loadingIndicator.style.display = "flex";
+        // loadingIndicator.style.display = "flex";
+
+        // ✅ Show loading animation
+        document.getElementById("loadingOverlayRegister").style.display = "flex"; // Show
+
 
         // ✅ Disable button to prevent multiple clicks
         document.getElementById("registerBtn").disabled = true;
@@ -156,7 +160,12 @@ function enableInstitutionActions() {
         showToast("✅ Certificate registered successfully!", "success");
 
         // ✅ Hide loading indicator
-        loadingIndicator.style.display = "none";
+        // loadingIndicator.style.display = "none";
+
+        
+    // ✅ Hide loading animation
+document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
+
 
         // ✅ Clear input fields
         document.getElementById("recipientName").value = "";
@@ -175,7 +184,7 @@ function enableInstitutionActions() {
         showToast("❌ Error registering certificate.", "error");
 
         // ✅ Hide loading indicator if error occurs
-        loadingIndicator.style.display = "none";
+        // loadingIndicator.style.display = "none";
     }
 
     // ✅ Re-enable the button after completion

@@ -574,7 +574,7 @@ Action button styling */
    Loading Overlay & Spinner
 ========================================= */
 /* 🔄 Fullscreen overlay that blurs background */
-#loadingOverlay, #loadingOverlayVerify, #loadingOverlayRole {
+#loadingOverlay, #loadingOverlayVerify, #loadingOverlayRole, #loadingOverlayRevoke, #loadingOverlayRegister{
   /* position: absolute; */
   /* top: 0; */
   /* left: 0; */
