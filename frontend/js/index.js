@@ -16,7 +16,9 @@ async function loadConfig() {
 let provider, signer, contract;
 
 window.onload = async () => {
+  document.getElementById("loadingOverlayRole").style.display = "flex"; // Show loading animation
   await loadConfig();
+  document.getElementById("loadingOverlayRole").style.display = "none"; // Hide loading animation
 
   loadPage("verify"); // Show verify page by default
   const connectBtn = document.getElementById("connectBtn");
