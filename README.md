@@ -1,4 +1,4 @@
-# 🎓 TrustedCert – Decentralized Certificate Verification Platform
+# <img src="/frontend/images/trusted_cert_logo.png" width="40" height="50" alt="Image Description"> TrustedCert – Decentralized Certificate Verification Platform
 
 ## Overview
 **TrustedCert** is a decentralized application (DApp) built to revolutionize the way academic and professional certificates are issued, stored, and verified. Powered by **Ethereum** smart contracts and **IPFS** for decentralized storage, TrustedCert empowers institutions to register certificates on-chain and allows employers or stakeholders to verify their authenticity instantly.
@@ -96,6 +96,21 @@ npx hardhat run scripts/deploy.js --network sepolia
 
 ## 📷 Screenshots
 - Institution Dashboard
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/trusted_cert_logo.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+
+<div style="display: inlign-flex; align-items: center">
+    <img src="/demo/Screenshot 2025-03-21 135551.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+
+<div style="display: inlign-flex; align-items: center">
+    <img src="/demo/Screenshot 2025-03-21 135551.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+
 - Certificate Upload Preview  
 - Admin Role Assignment Panel  
 - Certificate Verification UI

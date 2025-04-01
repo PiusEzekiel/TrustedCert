@@ -88,7 +88,7 @@ header {
   width: 100%;
   /* max-width: 1000px; */
   margin: 0 auto;
-  padding: 20px 20px;
+  padding: 10px 20px;
   background: #4B0082; /* Indigo background */
   /* background: rgba(0, 0, 0, 0.8); */
   color: white;
@@ -103,13 +103,13 @@ header {
 .branding {
   display: flex;
   align-items: center; /* Align logo and text vertically */
-  /* gap: 1px; Space between logo and text */
+  gap: 10px; /*  Space between logo and text */
 }
 
 /* 🔹 Logo */
 .logo {
-  width: 80px;
-  height: 80px;
+  width: 55px;
+  height: 70px;
 }
 
 /* 🔹 Text Alignment */
@@ -574,7 +574,9 @@ Action button styling */
    Loading Overlay & Spinner
 ========================================= */
 /* 🔄 Fullscreen overlay that blurs background */
-#loadingOverlay, #loadingOverlayVerify, #loadingOverlayRole, #loadingOverlayRevoke, #loadingOverlayRegister{
+#loadingOverlay, #loadingOverlayVerify, #loadingOverlayRole, 
+#loadingOverlayRevoke, #loadingOverlayRegister,
+#loadingOverlayFirst{
   /* position: absolute; */
   /* top: 0; */
   /* left: 0; */
