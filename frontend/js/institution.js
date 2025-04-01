@@ -125,8 +125,10 @@ function enableInstitutionActions() {
       previewArea.innerHTML = `<p>Preview not available for this file type.</p>`;
     }
 
-    // document.getElementById("cidDisplay").innerText = "Uploading to IPFS...";
+    // document.getElementById("cidDisplay").innerText = "Hang on, uploading to IPFS...";
+    document.getElementById("cidDisplay").style.display = "flex"; // Hide
     await uploadToIPFS(file);
+    document.getElementById("cidDisplay").style.display = "none"; // Hide
   });
 
 

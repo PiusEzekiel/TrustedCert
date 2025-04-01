@@ -97,24 +97,56 @@ npx hardhat run scripts/deploy.js --network sepolia
 ## 📷 Screenshots
 - Institution Dashboard
 <div style="display: inlign-flex; align-items: center">
-    <img src="/frontend/images/trusted_cert_logo.png" width="750" height="500" alt="Image Description">
+    <img src="/frontend/images/Screenshot 2025-04-01 162054.png" width="750" height="500" alt="Image Description">
 </div>
 <span style="margin-bottom: 50px;">&nbsp;</span>
-
 <div style="display: inlign-flex; align-items: center">
-    <img src="/demo/Screenshot 2025-03-21 135551.png" width="750" height="500" alt="Image Description">
+    <img src="/frontend/images/Screenshot 2025-04-01 162304.png" width="750" height="500" alt="Image Description">
 </div>
 <span style="margin-bottom: 50px;">&nbsp;</span>
-
 <div style="display: inlign-flex; align-items: center">
-    <img src="/demo/Screenshot 2025-03-21 135551.png" width="750" height="500" alt="Image Description">
+    <img src="/frontend/images/Screenshot 2025-04-01 162514.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/Screenshot 2025-04-01 162602.png" width="750" height="500" alt="Image Description">
 </div>
 <span style="margin-bottom: 50px;">&nbsp;</span>
 
-- Certificate Upload Preview  
-- Admin Role Assignment Panel  
-- Certificate Verification UI
+- Admin Dashboard
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/Screenshot 2025-04-01 164750.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/Screenshot 2025-04-01 164810.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/Screenshot 2025-04-01 164831.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/Screenshot 2025-04-01 164848.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+
+- Certificate Verification
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/Screenshot 2025-04-01 161818.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/Screenshot 2025-04-01 161859.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
+
 - Test Cases
+<span style="margin-bottom: 50px;">&nbsp;</span>
+<div style="display: inlign-flex; align-items: center">
+    <img src="/frontend/images/Screenshot 2025-04-01 165803.png" width="750" height="500" alt="Image Description">
+</div>
+<span style="margin-bottom: 50px;">&nbsp;</span>
 
 ---
 
