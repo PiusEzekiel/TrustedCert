@@ -37,7 +37,7 @@ let provider, signer, contract, uploadedCID = "";
   loadInstitutionDetails(address); // Load institution info on page load
   loadStats(); // Load statistics when page loads
   loadCertificates(); // Load certificates when page loads
-  
+
 })();
 
 
@@ -135,7 +135,6 @@ function enableInstitutionActions() {
     const title = document.getElementById("title").value.trim();
     const externalId = document.getElementById("externalId").value.trim();
     const previewArea = document.getElementById("previewArea");
-    // const loadingIndicator = document.getElementById("loadingIndicatorRegistering");
 
     if (!uploadedCID) {
         showToast("❌ Please upload a certificate file first!", "warning");
@@ -143,8 +142,6 @@ function enableInstitutionActions() {
     }
 
     try {
-        // ✅ Show loading indicator
-        // loadingIndicator.style.display = "flex";
 
         // ✅ Show loading animation
         document.getElementById("loadingOverlayRegister").style.display = "flex"; // Show
@@ -155,16 +152,16 @@ function enableInstitutionActions() {
 
         // ✅ Register the certificate on the blockchain
         const tx = await contract.registerCertificate(name, title, uploadedCID, externalId);
-        await tx.wait();
+await tx.wait();
+
+const address = await signer.getAddress();
+const certIds = await contract.getInstitutionCertificates(address);
+const latestId = certIds[certIds.length - 1];
 
         showToast("✅ Certificate registered successfully!", "success");
-
-        // ✅ Hide loading indicator
-        // loadingIndicator.style.display = "none";
-
         
     // ✅ Hide loading animation
-document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
+    document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
 
 
         // ✅ Clear input fields
@@ -174,7 +171,7 @@ document.getElementById("loadingOverlayRegister").style.display = "none"; // Hid
         previewArea.innerHTML = ""; // Clear preview
 
         // ✅ Show the newly registered certificate
-        showRegisteredCertificateCard(name, title, uploadedCID, id);
+        showRegisteredCertificateCard(name, title, uploadedCID, latestId);
 
         // ✅ Load all certificates again
         loadCertificates();
@@ -183,8 +180,9 @@ document.getElementById("loadingOverlayRegister").style.display = "none"; // Hid
         console.error("Register Error:", err);
         showToast("❌ Error registering certificate.", "error");
 
-        // ✅ Hide loading indicator if error occurs
-        // loadingIndicator.style.display = "none";
+        //  ✅ Hide loading animation
+    document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
+
     }
 
     // ✅ Re-enable the button after completion
@@ -193,24 +191,26 @@ document.getElementById("loadingOverlayRegister").style.display = "none"; // Hid
 
 // ✅ Function to show the newly registered certificate
 function showRegisteredCertificateCard(name, title, cid, id) {
-    const certCard = document.getElementById("registeredCert"); // Ensure this exists in HTML
-    // const certCard = document.createElement("li");
-    certCard.className = "document-item";
-    certCard.innerHTML = `
-        <div class="cert-details">
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Title:</strong> ${title}</p>
-            <p><strong>ID:</strong> ${id}
-        </span> 
-          <button class="copy-btn" onclick="copyToClipboard('${id}')">
-            copy
-          </button>
-        </p>
-            <img src="https://ipfs.io/ipfs/${cid}" class="file-preview" alt="Certificate Preview"/>
-        </div>
-    `;
-    // certList.prepend(certCard); // Add new certificate at the top
+  const certCard = document.getElementById("registeredCert");
+  certCard.innerHTML = ""; // Clear previous card if it exists
+
+  certCard.className = "result-wrapper"; // or use your custom success class
+  certCard.innerHTML = `
+      <div class="cert-card">
+          <h3>✅Certificate Registered</h3>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Title:</strong> ${title}</p>
+          <p><strong>ID:</strong> ${id}
+            <button class="copy-btn" onclick="copyToClipboard('${id}')">Copy</button>
+          </p>
+          
+      </div>
+
+      <div class="preview-container"><img src="https://ipfs.io/ipfs/${cid}" class="file-preview" alt="Certificate Preview"/></div>
+  `;
 }
+
+
 
 
   document.getElementById("loadCertsBtn").onclick = async () => {
@@ -240,13 +240,20 @@ async function loadCertificates() {
 
     // File preview logic
     let filePreview = "";
-    if (cert.cid) {
-      filePreview = cert.cid.endsWith(".pdf")
-        ? `<embed src="https://ipfs.io/ipfs/${cert.cid}" width="120" height="160" type="application/pdf" class="file-preview"/>`
-        : `<img src="https://ipfs.io/ipfs/${cert.cid}" class="file-preview" />`;
-    }
+if (cert.cid) {
+  const fileUrl = `https://gateway.pinata.cloud/ipfs/${cert.cid}` ?  `https://ipfs.io/ipfs/${cert.cid}`: ""; // or try cloudflare-ipfs
 
-    // Set inner HTML for the certificate item
+  if (cert.cid.endsWith(".pdf")) {
+    filePreview = `
+      <embed src="${fileUrl}" width="300" height="400" type="application/pdf" />
+      <p><a href="${fileUrl}" target="_blank" rel="noopener noreferrer">Open PDF in new tab</a></p>
+    `;
+  } else {
+    filePreview = `<img src="${fileUrl}" class="file-preview" alt="No PDF Preview" />`;
+  }
+}
+
+
     certCard.innerHTML = `
 
       <div class="cert-details">
@@ -262,9 +269,7 @@ async function loadCertificates() {
         <p><strong>Status:</strong> ${cert.isRevoked ? "❌ Revoked" : "✅ Active"}</p>
         <button class="button-action revokeCerts-button" onclick="revokeCert('${id}')">Revoke</button>
       </div>
-      <div class="file-preview-container">
-                    ${cert.cid ? `<img class="file-preview" src="https://ipfs.io/ipfs/${cert.cid}" alt="Certificate Preview"/>` : ""}
-                </div>
+      <div class="file-preview-container">${filePreview}</div>
       
 
     `;
@@ -300,6 +305,8 @@ window.revokeCert = async function (id) {
   try {
     const tx = await contract.revokeCertificate(id);
     await tx.wait();
+    
+
     showToast("✅ Certificate revoked!", "success");
   } catch (err) {
     console.error("Revoke Error:", err);

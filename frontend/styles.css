@@ -674,7 +674,7 @@ Action button styling */
 
   
   /* 🖼️ File Preview in Dashboard */
-  .file-preview-container {
+  .file-preview-container, .file-preview-container embed {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -709,6 +709,13 @@ Action button styling */
   }
   
   .file-preview img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .file-preview embed {
     width: 100%;
     height: auto;
     object-fit: cover;
