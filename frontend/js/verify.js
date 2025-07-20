@@ -63,6 +63,9 @@ function attachVerifyButton() {
       // ✅ Hide loading animation
       document.getElementById("loadingOverlayVerify").style.display = "none"; // Hide
 
+      // Hide Copy certificate ID button
+      document.getElementById("copySampleCertId").style.display = "none"; // Hide
+
 
 
       // Fetch all institutions to find the name of the issuer

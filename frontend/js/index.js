@@ -100,8 +100,10 @@ async function determineUserRole(address) {
 
     if (isAdmin) {
       loadPage("admin");
+      showToast("✅ Admin role detected. Loading Admin page.", "success");
     } else if (isInstitution) {
       loadPage("institution");
+      showToast("✅ Institution role detected. Loading Institution page.", "success");
     } else {
       showToast("No role assigned. Loading Verify page.", "warning");
       loadPage("verify");
