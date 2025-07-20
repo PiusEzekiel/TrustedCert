@@ -1,54 +1,53 @@
 /* Base Styles */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body, html {
-    font-family: 'Roboto', sans-serif;
-    color: #fff;
-    /* background: linear-gradient(-45deg, #1d3557, #030c12, #04302b, #264653); */
-    background: linear-gradient( #0a3d62, rgba(255, 255, 255, 0.2));
-    background-size: 100% 250%; /*  Adjusted for smoother animation */
-    animation: backgroundShift 6s ease infinite;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  }
-
-
+body,
+html {
+  font-family: "Roboto", sans-serif;
+  color: #fff;
+  background: linear-gradient(#0a3d62, rgba(255, 255, 255, 0.2));
+  background-size: 100% 250%; /*  Adjusted for smoother animation */
+  animation: backgroundShift 6s ease infinite;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+}
 
 /* Main content should expand to push the footer down */
 #app {
-    max-width: 900px;
-    width: 100%;
-    /* height: 250px; */
-    margin: auto;
-    /* background: rgba(255, 255, 255, 0.08); */
-    background: #00BFFF;
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    padding-top: 30px;
-    padding-right: 30px;
-    padding-left: 30px;
-    /* padding-bottom: 10px; */
-    margin-top: 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-    animation: fadeIn 1.2s ease-out;
-    color: black;
+  max-width: 900px;
+  width: 100%;
+  margin: auto;
+  background: #00bfff;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding-top: 30px;
+  padding-right: 30px;
+  padding-left: 30px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  animation: fadeIn 1.2s ease-out;
+  color: black;
+}
+
+/* Fade in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-
-    /* Fade in */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* =========================================
    Dashboard Header Styling
@@ -56,7 +55,7 @@
 /* 🔹 Logo and Text Section */
 .dashboard-header {
   display: block;
-  align-items: center; 
+  align-items: center;
   gap: 1px;
   margin-bottom: 10px;
 }
@@ -79,18 +78,14 @@
   opacity: 0.6; /* Slightly faded subtitle */
 }
 
-  
-
 header {
   display: flex;
   justify-content: space-between; /* Push elements apart */
   align-items: center;
   width: 100%;
-  /* max-width: 1000px; */
   margin: 0 auto;
   padding: 10px 20px;
-  background: #4B0082; /* Indigo background */
-  /* background: rgba(0, 0, 0, 0.8); */
+  background: #4b0082; /* Indigo background */
   color: white;
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   border-right: 2px solid rgba(255, 255, 255, 0.2);
@@ -133,7 +128,6 @@ header {
 .wallet-container button {
   /* background: #DAA520; */
   background: #0a3d62;
-  /* background: #DAA520; Gold background */
   color: white;
   border: none;
   padding: 10px 15px;
@@ -143,232 +137,159 @@ header {
   align-items: left;
   border-left: 22px solid rgba(255, 255, 255, 0.2);
   border-bottom: 4px solid rgba(255, 255, 255, 0.2);
-
 }
 
 .wallet-container button:hover {
-  /* background: #07506d; */
-  background: #DAA520;
+  background: #daa520;
 }
 
 #walletStatus {
   margin-left: 5px;
 }
 
-  
-  /* Headers */
-  
-  h1 {
-    font-size: rem;
-    font-weight: 700;
-  }
-  
-  h2 {
-    font-size: 1.5rem;
-    font-weight: 1200;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    width: 57%;
+/* Headers */
+
+h1 {
+  font-size: rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 1200;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  width: 57%;
   background: #0a3d62;
   color: white;
   border: none;
   padding: 10px 15px 5px 10px;
   border-radius: 5px;
-  border-left:  42px solid rgba(255, 255, 255, 0.2);
+  border-left: 42px solid rgba(255, 255, 255, 0.2);
   border-bottom: 10px solid rgba(255, 255, 255, 0.2);
   white-space: nowrap;
-    overflow: hidden;
-  }
-  
+  overflow: hidden;
+}
 
-  
 /* =========================================
    Instructions Info 
    ========================================= */
 
 .institution-info {
-
-    padding-bottom: 20px;
-
-    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
-    /* color: #fff; */
-    font-size: 1rem;
-    line-height: 1.5;
-    text-align: left;
-    opacity: 0.6;
-
-
+  padding-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: left;
+  opacity: 0.6;
 }
-  /* =========================================
+/* =========================================
    🏷️ Tabs Styling
 ========================================= */
 .tabs {
-    display: flex;
-    justify-content: space-around;
-    gap: 15px;
-    width: 100%;
-    max-width: 900px;
-    /* margin-bottom: 20px; */
-    /* background: rgba(255, 255, 255, 0.1); */
-    /* padding: 12px 20px; */
-    /* border-radius: 8px; */
-  }
-  
-  /* 🏷️ Tab Buttons */
-  .tab-button {
-    flex: 1;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    background: #4B0082; /* Indigo background */
-    /* background: #00BFFF; */
-    /* background: transparent; */
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    transition: background 0.3s ease-in-out;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  
-  .tab-button:hover {
-    background: #DAA520;
-    
-  }
-  
-  .tab-button.active {
-    /* background: linear-gradient(135deg, #07506d, #0a3d62); */
-    /* font-weight: bold; */
-    border-left: 22px solid rgba(255, 255, 255, 0.2);
-    border-right: 22px solid rgba(255, 255, 255, 0.2);
-    /* border-bottom: 10px solid rgba(255, 255, 255, 0.2); */
-    background: #DAA520;
-  }
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  width: 100%;
+  max-width: 900px;
+}
 
-  .tab-content {
-    display: none;
-    width: 110%;
-    /* max-width: 800px; */
-    /* height: 120%; */
-    /* margin-bottom: 80px; */
-    padding: 20px 180px 40px 80px;
-    background: #DAA520;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    /* justify-items: flex-start; */
-    /* border-radius: 8px; */
-    /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
-    /* margin-top: 10px; */
-    border-left: 22px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 4px solid rgba(255, 255, 255, 0.2);
+/* 🏷️ Tab Buttons */
+.tab-button {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  background: #4b0082; /* Indigo background */
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  transition: background 0.3s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
-    /* flex: 1; */
-    padding-bottom: 60px; /* Prevents overlap with footer */
-    position: relative;
-    
- 
-  }
-  
-  .tab-content.active {
-    display: block;
-  }
+.tab-button:hover {
+  background: #daa520;
+}
+
+.tab-button.active {
+  border-left: 22px solid rgba(255, 255, 255, 0.2);
+  border-right: 22px solid rgba(255, 255, 255, 0.2);
+  /* border-bottom: 10px solid rgba(255, 255, 255, 0.2); */
+  background: #daa520;
+}
+
+.tab-content {
+  display: none;
+  width: 110%;
+  padding: 20px 180px 40px 80px;
+  background: #daa520;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-left: 22px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 4px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 60px; /* Prevents overlap with footer */
+  position: relative;
+}
+
+.tab-content.active {
+  display: block;
+}
 
 /* =========================================
 Action button styling */
 
-  /* Buttons */
-  .button-action{
-    width: 100%;
-    padding: 12px 16px;
-    margin-top: 20px;
-    margin-bottom: 6px;
+/* Buttons */
+.button-action {
+  width: 100%;
+  padding: 12px 16px;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  background: #4b0082;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  border-left: 42px solid rgba(255, 255, 255, 0.2);
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-right: 42px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
 
-    background: #4B0082;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    font-size: 1rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    border-left: 42px solid rgba(255, 255, 255, 0.2);
-    border-top: 2px solid rgba(255, 255, 255, 0.2);
-    border-right: 42px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-      
-  }
-  
-  .button-action:hover {
-    background: #4B0082;
+.button-action:hover {
+  background: #4b0082;
+  border-left: 200px solid #4b0082;
+  border-top: 2px solid #4b0082;
+  border-right: 200px solid #4b0082;
+  border-bottom: 2px solid #4b0082;
+}
 
-    border-left: 200px solid #4B0082;
-    border-top: 2px solid #4B0082;
-    border-right: 200px solid #4B0082;
-    border-bottom: 2px solid #4B0082;
-    /* background: #00BFFF; */
-    /* background: rgba(255, 255, 255, 0.3); */
-    /* transform: translateY(-2px); */
-    
-  }
+input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #3c6582;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 15px;
+}
 
-
-  
-/* =========================================
-   📤 File Upload & Preview
-========================================= */
-
-  
-  /* .file-input {
-    opacity: 0;
-    width: 100%;
-    height: 40px;
-    position: absolute;
-    left: 0;
-    cursor: pointer;
-  } */
-  
-  /* 🎨 Styled Button for File Input */
-  /* .file-input-label {
-    display: inline-block;
-    width: 100%;
-    padding: 12px 20px;
-    background: linear-gradient(135deg, #4a90e2, #007bff);
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: 0.3s ease-in-out;
-    box-shadow: 0px 4px 10px rgba(74, 144, 226, 0.4);
-  } */
-
-      
-      input {
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #3c6582;
-        background: rgba(255, 255, 255, 0.2);
-        color: #fff;
-        font-size: 1rem;
-        width: 100%;
-        margin-top: 15px;
-      }
-      
-      input::placeholder {
-        color: #3c6582;
-        opacity: 0.8;
-        
-      }
-
+input::placeholder {
+  color: #3c6582;
+  opacity: 0.8;
+}
 
 /* 📂 File Input */
 #certificateFile {
@@ -391,7 +312,6 @@ Action button styling */
   flex-direction: column; /* Stack elements vertically */
   gap: 15px; /* Adds space between elements */
   width: 100%;
-  /* max-width: 400px; */
   margin-top: 20px;
   padding: 15px;
   border-radius: 8px;
@@ -399,7 +319,6 @@ Action button styling */
   border: 1px dashed rgba(10, 61, 97, 0.6);
   text-align: center;
   transition: 0.3s ease-in-out;
-  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
 }
 
 /* 🖼️ Image Preview */
@@ -433,71 +352,53 @@ Action button styling */
   border-radius: 5px;
 }
 
-
 /* Wrapper to align card and preview side by side */
 .result-wrapper {
   display: flex;
-  /* gap: 20px; */
   margin-top: 20px;
   align-items: space-between;
   flex-wrap: wrap; /* allows wrapping on smaller screens */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   background: rgba(255, 255, 255, 0.1);
   padding: 15px;
   border-radius: 8px;
-  /* display: flex; */
-  /* flex-wrap: wrap; */
   justify-content: space-between;
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: transform 0.3s ease-in-out;
-  /* gap: 15px; */
-  /* word-wrap: break-word; */
 }
-
 
 /* Certificate Card Styling */
 .cert-card {
-    padding: 10px;
-    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
-    text-align: left;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    color: white;
+  padding: 10px;
+  text-align: left;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  color: white;
   word-wrap: break-word;
-  /* background: #3c6582; */
-  /* background: rgba(255, 255, 255, 0.1); */
-  /* border-radius: 8px; */
-  /* border: 1px solid rgba(255, 255, 255, 0.2);  */
   flex: 1;
   min-width: 60%;
   min-height: 100%;
 
   border-top-right-radius: 0px;
-  border-right:  0px solid rgba(255, 255, 255, 0.2);
+  border-right: 0px solid rgba(255, 255, 255, 0.2);
   border-bottom-right-radius: 0px;
-
 }
 
-
 .cert-card h3 {
-    color: #0a3d62;
-    text-align: left;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
+  color: #0a3d62;
+  text-align: left;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
 }
 
 .cert-card p {
-    font-size: 0.9.5rem;
-    margin: 5px 0;
-    /* color:  #0a3d62; */
-    color: #0a3d62;
-    /* font-weight: bold; */
-    /* line-height: 1.4; */
+  font-size: 0.9.5rem;
+  margin: 5px 0;
+  color: #0a3d62;
 }
 
 .cert-card strong {
   font-weight: bold;
-    /* color: #63849b; */
 }
 
 .cert-card a {
@@ -510,109 +411,84 @@ Action button styling */
   text-decoration: underline;
 }
 
-
-
 /* ✅ Certificate Preview */
 .preview-container {
-    text-align: center;
-    align-items: center;
-    flex: 1;
-    padding: 10px;
-    text-align: left;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    /* color: white; */
+  text-align: center;
+  align-items: center;
+  flex: 1;
+  padding: 10px;
+  text-align: left;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   word-wrap: break-word;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2); 
+  border: 1px solid rgba(255, 255, 255, 0.2);
   flex: 1;
   min-height: 100%;
   min-width: 40%;
-
   border-top-left-radius: 0px;
-  /* border-radius: 5px; */
-  /* border-left:  0px solid rgba(255, 255, 255, 0.2); */
   border-bottom-left-radius: 0px;
-
 }
 
 .certificate-image {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px;
-    background: #f9f9f9;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+  background: #f9f9f9;
 }
 
-#cidDisplay
-{
+#cidDisplay {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column; /* Stack elements vertically */
-  /* max-width: 400px; */
   margin: 5px;
-  /* padding: 15px; */
   border-radius: 8px;
-  /* background: rgba(255, 255, 255, 0.2); */
-  color:  #0a3d62;
+  color: #0a3d62;
   text-align: center;
   transition: 0.3s ease-in-out;
   font-size: 0.8rem;
-  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
 }
 
+.error {
+  color: red;
+  font-weight: bold;
+  background: rgba(255, 0, 0, 0.1);
+}
 
-  
-  .error {
-    color: red;
-    font-weight: bold;
-    background: rgba(255, 0, 0, 0.1);
-  }
-
-  
-  /* =========================================
+/* =========================================
    🔹 dashboard divider
 ========================================= */
 .divider {
-    border: none;
-    height: 3px;
-    /* background: #04060f; */
-    background:  rgba(0, 0, 0, 0.05);
-    /* animation: glow 4s infinite alternate; */
-    margin-top: 40px;
-    margin-bottom: 10px;
-  }
-  
+  border: none;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.05);
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
 
-
-  /* =========================================
+/* =========================================
    Loading Overlay & Spinner
 ========================================= */
-/* 🔄 Fullscreen overlay that blurs background */
-#loadingOverlay, #loadingOverlayVerify, #loadingOverlayRole, 
-#loadingOverlayRevoke, #loadingOverlayRegister,
-#loadingOverlayFirst{
-  /* position: absolute; */
-  /* top: 0; */
-  /* left: 0; */
+#loadingOverlay,
+#loadingOverlayVerify,
+#loadingOverlayRole,
+#loadingOverlayRevoke,
+#loadingOverlayRegister,
+#loadingOverlayFirst {
   width: 100%;
   height: 100%;
-  /* backdrop-filter: blur(6px);  */
-  /* ✅ Soft blur effect */
-  /* background-color: rgba(0, 0, 0, 0.3);  */
-  /* Dimmed background */
   z-index: 1000; /* Ensure it's above everything */
   display: none; /* Shown only during loading */
   justify-content: center;
   align-items: center;
   margin-top: 15px;
-  /* border-radius: 10px; */
 }
 
 /* ✨ Loading indicator styles */
-#loadingIndicator{
+#loadingIndicator {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -622,10 +498,9 @@ Action button styling */
   width: 200px;
   height: 150px;
   background: #3c6582;
-  /* border: 3px solid #DAA520; Soft gold border */
-  border: 2px solid #00BFFF;
+  border: 2px solid #00bfff;
   border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2); 
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
   color: white;
   font-size: 15px;
   animation: fadeIn 0.3s ease-in-out;
@@ -641,340 +516,308 @@ Action button styling */
 
 /* 🔄 Spin animation */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 🟢 Smooth fade */
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-    /* Fade in */
-    /* @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    } */
-
-
-
-  
 /* =========================================
    View ALL Document List Styling
 ========================================= */
-/* 📜 Document List Styling */
 .document-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 800px; /* Prevent excessive height */
-    overflow-y: auto;  /* Enable scrolling if too many documents */
-    display: flex;
-    flex-direction: column;
-    gap: 12px; /* Adds spacing between items */
-  }
-  
-  /* 🎟️ Individual Certificate Card */
-  .document-item {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    display: flex;
-    /* flex-wrap: wrap; */
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s ease-in-out;
-    gap: 15px;
-    word-wrap: break-word;
-  }
-  
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 800px; /* Prevent excessive height */
+  overflow-y: auto; /* Enable scrolling if too many documents */
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Adds spacing between items */
+}
 
-  
-  /* 🖼️ File Preview in Dashboard */
-  .file-preview-container, .file-preview-container embed {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    /* padding: 10px; */
+/* 🎟️ Individual Certificate Card */
+.document-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease-in-out;
+  gap: 15px;
+  word-wrap: break-word;
+}
 
-    text-align: center;
-    align-items: center;
-    flex: 1;
-    padding: 10px;
-    text-align: left;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    color: white;
+/* 🖼️ File Preview in Dashboard */
+.file-preview-container,
+.file-preview-container embed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-align: center;
+  align-items: center;
+  flex: 1;
+  padding: 10px;
+  text-align: left;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  color: white;
   word-wrap: break-word;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2); 
+  border: 1px solid rgba(255, 255, 255, 0.2);
   flex: 1;
   min-width: 30%;
-
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-  }
+}
 
-  
-  .file-preview {
-    width: 100%;
-    /* max-width: 150px;
-    max-height: 150px; */
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(74, 144, 226, 0.4);
-  }
-  
-  .file-preview img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-  }
+.file-preview {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(74, 144, 226, 0.4);
+}
 
-  .file-preview embed {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  /* 📜 Certificate Details */
-  .cert-details {
-    /* flex: 1; */
-    min-width: 49%;
-  }
+.file-preview img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
 
+.file-preview embed {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
 
-  
-  .cert-details p {
-    font-size: 14px;
-    /* margin: 4px 0; */
-    text-align: left;
-    /* word-break: break-word; */
-    /* padding-right: 30px; */
-  }
+/* 📜 Certificate Details */
+.cert-details {
+  min-width: 49%;
+}
 
-  .cert-details .button-action {
+.cert-details p {
+  font-size: 14px;
+  text-align: left;
+}
 
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: background 0.3s ease-in-out;
-  }
+.cert-details .button-action {
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.3s ease-in-out;
+}
 
-  /* 📋 Copy Button */
+/* 📋 Copy Button */
 .copy-btn {
-    background: #00BFFF;
-    /* height: 25px; */
-    margin: 0 5px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px;
-    padding: 2px 10px;
-    color: white;
-    font-style: italic;
-  }
-  
-  .copy-btn:hover {
-    color: #00BFFF;
-    background: #4B0082;;
-  }
-  
-  /* ⚠️ Revoke Button */
-  .revokeCerts-button {
-    background: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    /* padding-left: 4px; */
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    width: 40%;
-  }
-  
-  .revokeCerts-button:hover {
-    background: darkred;
+  background: #00bfff;
+  /*margin: 0 5px;*/
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 10px;
+  color: white;
+  font-style: italic;
+}
 
-      border-left: 20px solid #4B0082;
-      border-top: 0px solid #4B0082;
-      border-right: 20px solid #4B0082;
-      border-bottom: 0px solid #4B0082;
-      /* background: #00BFFF; */
-      /* background: rgba(255, 255, 255, 0.3); */
-      /* transform: translateY(-2px); */
-  }
+.copy-btn:hover {
+  color: #00bfff;
+  background: #4b0082;
+}
 
-    /* ⚠️ Revoke Button */
-    .revoke-button {
-      background: red;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      /* padding-left: 4px; */
-      cursor: pointer;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-    
-    .revoke-button:hover {
-      background: darkred;
-    }
-    
-  
+/* ⚠️ Revoke Button */
+.revokeCerts-button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  width: 40%;
+}
 
+.revokeCerts-button:hover {
+  background: darkred;
+  border-left: 20px solid #4b0082;
+  border-top: 0px solid #4b0082;
+  border-right: 20px solid #4b0082;
+  border-bottom: 0px solid #4b0082;
+}
+
+/* ⚠️ Revoke Button */
+.revoke-button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.revoke-button:hover {
+  background: darkred;
+}
 
 /* Footer Styling */
 footer {
   position: relative; /* Keeps footer inside the tab-content */
   bottom: 0;
   width: 100%;
-  background: #4B0082;
+  background: #4b0082;
   color: white;
   padding: 15px;
   text-align: center;
   font-size: 0.9rem;
-  /* border-top: 2px solid rgba(255, 255, 255, 0.2); */
   margin-top: auto; /* Pushes footer down */
 }
 
-
 /* Responsive Design */
 @media (max-width: 790px) {
-
-  
-
-
-  /* Wrapper to align card and preview side by side */
-.result-wrapper {
-  flex-direction: column;
-  /* gap: 20px; */
-  margin-top: 10px;
-  /* align-items: space-between; */
-  /* flex-wrap: wrap; allows wrapping on smaller screens */
-}  
-  .cert-card, .preview-container {
+  .result-wrapper {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  .cert-card,
+  .preview-container {
     width: 100%;
-      /* margin-top: 10px; */
-      padding: 10px;
-      border-radius: 0px;
-  border: 10px solid rgba(255, 255, 255, 0.2); 
-    }
+    padding: 10px;
+    border-radius: 0px;
+    border: 10px solid rgba(255, 255, 255, 0.2);
+  }
 
-    .file-preview-container {
-      min-width: 50%;
-    }
+  .file-preview-container {
+    min-width: 50%;
+  }
 
-    #app {
-        /* margin: 0px 10px; */
-        padding-top: 10px;
+  #app {
+    padding-top: 10px;
     padding-right: 10px;
     padding-left: 10px;
-        flex-direction: column; 
-        /* Stack elements vertically */
-        align-items: center; /* Center items */
-        word-wrap: break-word;
-        overflow: hidden;
-
-      }
-
-      header {
-        width: 100%;
-        max-width: 100%;
-        padding: 20px;
-        /* flex-direction: column; Stack elements vertically */
-        align-items: center; /* Center items */
-        word-wrap: break-word;
-
-      }
-
-
-      .tabs, .tab-content, .tab-button, h2{
-        width: 100%;
-        max-width: 100%;
-        padding: 20px;
-        flex-direction: column; /* Stack elements vertically */
-        align-items: center; /* Center items */
-        border: none;
-        border-radius: 8px;
-
-      }
-      h2, h3 {
-        font-size: 1rem;
-      }
-
-      h2 {
-        /* font-size: 1.5rem; */
-        font-weight: 1200;
-        text-align: left;
-        display: flex;
-        align-items: start;
-        width: 57%;
-      background: #0a3d62;
-      color: white;
-      border: none;
-      padding: 5px 2px 2px 10px;
-      border-radius: 5px;
-      border-left:  12px solid rgba(255, 255, 255, 0.2);
-      border-bottom: 4px solid rgba(255, 255, 255, 0.2);
-      white-space: nowrap;
-        overflow: hidden;
-      }
-  
-    input, button, p, .cert-card p, .cert-card h3, .cert-card a, .cert-details p, .document-item p{
-      font-size: 0.8rem;
-    }
-    .button-action, .tab-button {
-      font-size: 0.8rem;
-      padding: 10px 10px;
-      width: 100%;
-      border-bottom: none;
-      border-top: none;
-    }
-    .cert-details .button-action.revokeCerts-button{
-      font-size: 0.8rem;
-      padding: 5px 10px;
-      width: 30%;
-    }
-    .file-preview-container {
-      width: 40%;
-      align-content: end;
-
-      
-  
-    }
-
-    .document-list {
-      max-height: 400px; /* Prevent excessive height */
-      width: 100%;
-      overflow-y: auto;  /* Enable scrolling if too many documents */
-      overflow-x: hidden;
-    }
-
-
-    .button-action:hover, .revokeCerts-button:hover{
-      /* padding: 10px 10px; */
-      width: 100%;
-      max-width: 100%;
-        border: none;
-        border-radius: 8px;
-    }
-
-    .revokeCerts-button {
-      font-size: 0.8rem;
-      overflow-x: hidden;
-      padding: 5px 2px;
-    }
-
-    .dashboard-header h3, .branding-text h1 {
-      font-size: 1.2rem;
-    }
-
-    .dashboard-header p, .branding-text p {
-      font-size: 0.8rem;
-    }
-  
+    flex-direction: column;
+    /* Stack elements vertically */
+    align-items: center; /* Center items */
+    word-wrap: break-word;
+    overflow: hidden;
   }
+
+  header {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+    /* flex-direction: column; Stack elements vertically */
+    align-items: center; /* Center items */
+    word-wrap: break-word;
+  }
+
+  .tabs,
+  .tab-content,
+  .tab-button,
+  h2 {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center items */
+    border: none;
+    border-radius: 8px;
+  }
+  h2,
+  h3 {
+    font-size: 1rem;
+  }
+
+  h2 {
+    font-weight: 1200;
+    text-align: left;
+    display: flex;
+    align-items: start;
+    width: 57%;
+    background: #0a3d62;
+    color: white;
+    border: none;
+    padding: 5px 2px 2px 10px;
+    border-radius: 5px;
+    border-left: 12px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 4px solid rgba(255, 255, 255, 0.2);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  input,
+  button,
+  p,
+  .cert-card p,
+  .cert-card h3,
+  .cert-card a,
+  .cert-details p,
+  .document-item p {
+    font-size: 0.8rem;
+  }
+  .button-action,
+  .tab-button {
+    font-size: 0.8rem;
+    padding: 10px 10px;
+    width: 100%;
+    border-bottom: none;
+    border-top: none;
+  }
+  .cert-details .button-action.revokeCerts-button {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    width: 30%;
+  }
+  .file-preview-container {
+    width: 40%;
+    align-content: end;
+  }
+
+  .document-list {
+    max-height: 400px; /* Prevent excessive height */
+    width: 100%;
+    overflow-y: auto; /* Enable scrolling if too many documents */
+    overflow-x: hidden;
+  }
+
+  .button-action:hover,
+  .revokeCerts-button:hover {
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    border-radius: 8px;
+  }
+
+  .revokeCerts-button {
+    font-size: 0.8rem;
+    overflow-x: hidden;
+    padding: 5px 2px;
+  }
+
+  .dashboard-header h3,
+  .branding-text h1 {
+    font-size: 1.2rem;
+  }
+
+  .dashboard-header p,
+  .branding-text p {
+    font-size: 0.8rem;
+  }
+}
