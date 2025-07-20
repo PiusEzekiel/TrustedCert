@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
  * @dev Smart contract to manage issuance, revocation, and verification of certificates.
  */
 contract CertificateRegistry is AccessControl, Pausable {
-    // Define a custom role for institutions allowed to issue certificates
+    // Custom role for institutions allowed to issue certificates
     bytes32 public constant INSTITUTION_ROLE = keccak256("INSTITUTION_ROLE");
 
     // Structure to store details of each certificate
@@ -121,7 +121,8 @@ contract CertificateRegistry is AccessControl, Pausable {
      * @return descriptions List of institution descriptions.
      * @return wallets List of institution addresses.
      */
-    function getInstitutions() external view returns (string[] memory names, string[] memory descriptions, address[] memory wallets) {
+    function getInstitutions() external view returns (string[] memory names, 
+    string[] memory descriptions, address[] memory wallets) {
         uint length = institutionList.length;
         names = new string[](length);
         descriptions = new string[](length);
@@ -184,7 +185,8 @@ contract CertificateRegistry is AccessControl, Pausable {
      * @return issuedBy The issuing institution.
      */
     function verifyCertificate(bytes32 certId)
-        external view returns (string memory recipientName, string memory title, string memory cid, uint256 issuedAt, bool isRevoked, address issuedBy)
+        external view returns (string memory recipientName, string memory title, 
+        string memory cid, uint256 issuedAt, bool isRevoked, address issuedBy)
     {
         Certificate memory cert = certificates[certId];
         require(cert.issuedAt != 0, "Certificate does not exist");

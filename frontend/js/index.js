@@ -1,4 +1,4 @@
-// import { CONTRACT_ADDRESS } from "../config.js";
+
 
 let CONTRACT_ADDRESS, PINATA_JWT;
 
@@ -9,7 +9,6 @@ async function loadConfig() {
   PINATA_JWT = config.pinataJWT;
 }
 
-// await loadConfig();
 
 
 // Global setup
@@ -26,10 +25,7 @@ window.onload = async () => {
 
 
   connectBtn.onclick = async () => {
-    // if (!window.ethereum) {
-    //   showToast("⚠️ Please install MetaMask!", "warning");
-    //   return;
-    // }
+
 
     if (!window.ethereum) {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -87,8 +83,11 @@ async function determineUserRole(address) {
     appDiv.innerHTML = ""; // Clear the app div while loading
     document.getElementById("loadingOverlayRole").style.display = "flex"; // Show loading animation
 
+    if (!contract) throw new Error("Smart contract not initialized");
+
     const adminRole = await contract.DEFAULT_ADMIN_ROLE();
     const institutionRole = await contract.INSTITUTION_ROLE();
+
     const isAdmin = await contract.hasRole(adminRole, address);
     const isInstitution = await contract.hasRole(institutionRole, address);
 
@@ -96,7 +95,7 @@ async function determineUserRole(address) {
     await new Promise(resolve => setTimeout(resolve, 3000));
 
     // ✅ Hide loading animation
-document.getElementById("loadingOverlayRole").style.display = "none"; // Hide
+    document.getElementById("loadingOverlayRole").style.display = "none"; // Hide
 
 
     if (isAdmin) {
@@ -104,11 +103,16 @@ document.getElementById("loadingOverlayRole").style.display = "none"; // Hide
     } else if (isInstitution) {
       loadPage("institution");
     } else {
+      showToast("No role assigned. Loading Verify page.", "warning");
       loadPage("verify");
     }
   } catch (error) {
     console.error("Role Determination Error:", error);
-    showToast("❌ Unable to determine role", "error");
+    showToast("❌ Unable to determine role. Reverting to Verify page.", "error");
+
+    // Hide overlay and fallback to verify page
+    document.getElementById("loadingOverlayRole").style.display = "none";
+    loadPage("verify");
   }
 }
 
@@ -122,13 +126,11 @@ async function loadPage(role) {
 
     console.log(`✅ Loaded ${role}.html into #app`);
 
-    // ✅ Now dynamically load the role's script
+    // Dynamically load the role's script
     const script = document.createElement("script");
     script.src = `js/${role}.js`;
     script.type = "module";
 
-    // ⛔ DO NOT use defer — it doesn’t work on dynamically created scripts
-    // script.defer = true;
 
     script.onload = () => console.log(`✅ ${role}.js loaded`);
     script.onerror = () => console.error(`❌ Failed to load js/${role}.js`);

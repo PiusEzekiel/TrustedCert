@@ -34,7 +34,7 @@ let provider, signer, contract;
   const hasRole = await contract.hasRole(adminRole, userAddress);
 
   if (hasRole) {
-        loadAllCertificates(); // ✅ Load certificates on page load
+    loadAllCertificates(); // ✅ Load certificates on page load
     enableAdminFunctions();
     loadStats(); // Load statistics on page load
 
@@ -220,26 +220,6 @@ function enableAdminFunctions() {
 
 
 
-
-
-  // document.getElementById("revokeCertBtn").onclick = async () => {
-  //   const certId = document.getElementById("revokeCertId").value.trim();
-  //   if (!certId) {
-  //     showToast("❌ Please enter a valid Certificate ID!", "warning");
-      
-  //     return;
-  //   }
-
-  //   try {
-  //     const tx = await contract.revokeCertificate(certId);
-  //     await tx.wait();
-  //     showToast("✅ Certificate revoked!", "success");
-  //     loadStats(); // Refresh stats
-  //   } catch (err) {
-  //     console.error("Error revoking certificate:", err);
-  //     showToast("❌ Transaction failed", "error");
-  //   }
-  // };
 
   document.getElementById("pauseBtn").onclick = async () => {
     try {

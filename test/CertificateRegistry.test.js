@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("CertificateRegistry", function () {
+describe("TrustedCert CertificateRegistry Unit Tests", function () {
   let CertificateRegistry;
   let registry;
   let admin, institution1, institution2, user;

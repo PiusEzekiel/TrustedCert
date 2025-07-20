@@ -297,16 +297,29 @@ if (cert.cid) {
 
 // Load statistics
 async function loadStats() {
-  const certs = await contract.getInstitutionCertificates(await signer.getAddress());
-  document.getElementById("totalCerts").innerText = certs.length;
-  document.getElementById("revokedCerts").innerText = certs.filter(cert => cert.isRevoked).length;
+  const certIds = await contract.getInstitutionCertificates(await signer.getAddress());
+
+  let revokedCount = 0;
+
+  for (const id of certIds) {
+    const cert = await contract.verifyCertificate(id);
+    if (cert.isRevoked) {
+      revokedCount++;
+    }
+  }
+
+  document.getElementById("totalCerts").innerText = certIds.length;
+  document.getElementById("revokedCerts").innerText = revokedCount;
 }
+
 
 // Revocation globally exposed
 window.revokeCert = async function (id) {
   try {
     const tx = await contract.revokeCertificate(id);
     await tx.wait();
+    loadStats(); // Reload stats after revocation
+    loadCertificates(); // Reload certificates after revocation
     
 
     showToast("✅ Certificate revoked!", "success");
