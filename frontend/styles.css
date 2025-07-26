@@ -183,6 +183,24 @@ h2 {
   text-align: left;
   opacity: 0.6;
 }
+
+.institution-card {
+  padding: 12px;
+  border-bottom: 1px solid #4b0082;
+  list-style-type: none;
+}
+
+.institution-card h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.institution-card p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
 /* =========================================
    🏷️ Tabs Styling
 ========================================= */

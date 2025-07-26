@@ -208,15 +208,29 @@ function enableAdminFunctions() {
   };
 
   async function loadInstitutions() {
-    const institutions = await contract.getInstitutions();
-    const list = document.getElementById("institutionList");
+  const institutionsRaw = await contract.getInstitutions();
 
-    list.innerHTML = institutions.map(addr => `<li>${addr}</li>`).join("");
+  const institutions = institutionsRaw.wallets.map((wallet, index) => ({
+    name: institutionsRaw.names[index],
+    description: institutionsRaw.descriptions[index],
+    wallet: wallet,
+  }));
 
-    document.getElementById("searchInstitutions").onkeyup = debounce(() => {
-      filterList("institutionList", document.getElementById("searchInstitutions").value);
-    }, 300);
-  }
+  const list = document.getElementById("institutionList");
+
+  list.innerHTML = institutions.map(inst => `
+    <li class="institution-card">
+      <h4>${inst.name}</h4>
+      <p><em>${inst.description}</em></p>
+      <p>${inst.wallet}</p>
+    </li>
+  `).join("");
+
+  document.getElementById("searchInstitutions").onkeyup = debounce(() => {
+    filterList("institutionList", document.getElementById("searchInstitutions").value);
+  }, 300);
+}
+
 
 
 
