@@ -57,7 +57,7 @@ async function loadInstitutionDetails(walletAddress) {
     console.log("Reconstructed Institutions:", institutions);
 
     // Find the institution by wallet
-    const institution = institutions.find(inst => 
+    const institution = institutions.find(inst =>
       inst.wallet && inst.wallet.toLowerCase() === walletAddress.toLowerCase()
     );
 
@@ -139,65 +139,66 @@ function enableInstitutionActions() {
     const previewArea = document.getElementById("previewArea");
 
     if (!uploadedCID) {
-        showToast("❌ Please upload a certificate file first!", "warning");
-        return;
+      showToast("❌ Please upload a certificate file first!", "warning");
+      return;
     }
 
     try {
 
-        // ✅ Show loading animation
-        document.getElementById("loadingOverlayRegister").style.display = "flex"; // Show
+      // ✅ Show loading animation
+      document.getElementById("loadingOverlayRegister").style.display = "flex"; // Show
 
 
-        // ✅ Disable button to prevent multiple clicks
-        document.getElementById("registerBtn").disabled = true;
+      // ✅ Disable button to prevent multiple clicks
+      document.getElementById("registerBtn").disabled = true;
 
-        // ✅ Register the certificate on the blockchain
-        const tx = await contract.registerCertificate(name, title, uploadedCID, externalId);
-await tx.wait();
+      // ✅ Register the certificate on the blockchain
+      const tx = await contract.registerCertificate(name, title, uploadedCID, externalId);
+      await tx.wait();
 
-const address = await signer.getAddress();
-const certIds = await contract.getInstitutionCertificates(address);
-const latestId = certIds[certIds.length - 1];
+      const address = await signer.getAddress();
+      const certIds = await contract.getInstitutionCertificates(address);
+      const latestId = certIds[certIds.length - 1];
 
-        showToast("✅ Certificate registered successfully!", "success");
-        
-    // ✅ Hide loading animation
-    document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
+      showToast("✅ Certificate registered successfully!", "success");
+
+      // ✅ Hide loading animation
+      document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
 
 
-        // ✅ Clear input fields
-        document.getElementById("recipientName").value = "";
-        document.getElementById("title").value = "";
-        document.getElementById("externalId").value = "";
-        previewArea.innerHTML = ""; // Clear preview
+      // ✅ Clear input fields
+      document.getElementById("recipientName").value = "";
+      document.getElementById("title").value = "";
+      document.getElementById("externalId").value = "";
+      previewArea.innerHTML = ""; // Clear preview
 
-        // ✅ Show the newly registered certificate
-        showRegisteredCertificateCard(name, title, uploadedCID, latestId);
+      // ✅ Show the newly registered certificate
+      showRegisteredCertificateCard(name, title, uploadedCID, latestId);
+      loadStats()
 
-        // ✅ Load all certificates again
-        loadCertificates();
+      // ✅ Load all certificates again
+      loadCertificates();
 
     } catch (err) {
-        console.error("Register Error:", err);
-        showToast("❌ Error registering certificate.", "error");
+      console.error("Register Error:", err);
+      showToast("❌ Error registering certificate.", "error");
 
-        //  ✅ Hide loading animation
-    document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
+      //  ✅ Hide loading animation
+      document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
 
     }
 
     // ✅ Re-enable the button after completion
     document.getElementById("registerBtn").disabled = false;
-};
+  };
 
-// ✅ Function to show the newly registered certificate
-function showRegisteredCertificateCard(name, title, cid, id) {
-  const certCard = document.getElementById("registeredCert");
-  certCard.innerHTML = ""; // Clear previous card if it exists
+  // ✅ Function to show the newly registered certificate
+  function showRegisteredCertificateCard(name, title, cid, id) {
+    const certCard = document.getElementById("registeredCert");
+    certCard.innerHTML = ""; // Clear previous card if it exists
 
-  certCard.className = "result-wrapper"; // or use your custom success class
-  certCard.innerHTML = `
+    certCard.className = "result-wrapper"; // or use your custom success class
+    certCard.innerHTML = `
       <div class="cert-card">
           <h3>✅Certificate Registered</h3>
           <p><strong>Name:</strong> ${name}</p>
@@ -210,7 +211,7 @@ function showRegisteredCertificateCard(name, title, cid, id) {
 
       <div class="preview-container"><img src="https://ipfs.io/ipfs/${cid}" class="file-preview" alt="Certificate Preview"/></div>
   `;
-}
+  }
 
 
 
@@ -242,18 +243,18 @@ async function loadCertificates() {
 
     // File preview logic
     let filePreview = "";
-if (cert.cid) {
-  const fileUrl = `https://gateway.pinata.cloud/ipfs/${cert.cid}` ?  `https://ipfs.io/ipfs/${cert.cid}`: ""; // or try cloudflare-ipfs
+    if (cert.cid) {
+      const fileUrl = `https://gateway.pinata.cloud/ipfs/${cert.cid}` ? `https://ipfs.io/ipfs/${cert.cid}` : ""; // or try cloudflare-ipfs
 
-  if (cert.cid.endsWith(".pdf")) {
-    filePreview = `
+      if (cert.cid.endsWith(".pdf")) {
+        filePreview = `
       <embed src="${fileUrl}" width="300" height="400" type="application/pdf" />
       <p><a href="${fileUrl}" target="_blank" rel="noopener noreferrer">Open PDF in new tab</a></p>
     `;
-  } else {
-    filePreview = `<img src="${fileUrl}" class="file-preview" alt="No PDF Preview" />`;
-  }
-}
+      } else {
+        filePreview = `<img src="${fileUrl}" class="file-preview" alt="No PDF Preview" />`;
+      }
+    }
 
 
     certCard.innerHTML = `
@@ -278,20 +279,20 @@ if (cert.cid) {
     certContainer.appendChild(certCard);
   }
 
-  
+
 
   // Append the list container to the main certificateList div
   certificateList.appendChild(certContainer);
 
-   // ✅ Ensure `searchCertificates` exists before setting event
-   const searchInput = document.getElementById("searchCertificates");
-   if (searchInput) {
-     searchInput.onkeyup = debounce(() => {
-       filterList("certificateList", searchInput.value);
-     }, 300);
-   } else {
-     console.warn("⚠️ 'searchCertificates' input not found. Search functionality disabled.");
-   }
+  // ✅ Ensure `searchCertificates` exists before setting event
+  const searchInput = document.getElementById("searchCertificates");
+  if (searchInput) {
+    searchInput.onkeyup = debounce(() => {
+      filterList("certificateList", searchInput.value);
+    }, 300);
+  } else {
+    console.warn("⚠️ 'searchCertificates' input not found. Search functionality disabled.");
+  }
 }
 
 
@@ -320,7 +321,7 @@ window.revokeCert = async function (id) {
     await tx.wait();
     loadStats(); // Reload stats after revocation
     loadCertificates(); // Reload certificates after revocation
-    
+
 
     showToast("✅ Certificate revoked!", "success");
   } catch (err) {

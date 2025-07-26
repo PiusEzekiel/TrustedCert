@@ -1,11 +1,13 @@
 <div class="dashboard-header">
-<h3>Admin Dashboard</h3>
-<p>Welcome, admin! Manage institutions and certificates.</p>
+  <h3>Admin Dashboard</h3>
+  <p>Welcome, admin! Manage institutions and certificates.</p>
 </div>
 
 <!-- TAB NAVIGATION -->
 <div class="tabs">
-  <button class="tab-button active" data-tab="institutions">🏛️ Institutions</button>
+  <button class="tab-button active" data-tab="institutions">
+    🏛️ Institutions
+  </button>
   <button class="tab-button" data-tab="certificates">Certificates</button>
   <button class="tab-button" data-tab="statistics">Statistics</button>
   <button class="tab-button" data-tab="settings">⚙️ Settings</button>
@@ -16,55 +18,113 @@
 <!-- Manage Institutions -->
 <div class="tab-content active" id="institutions">
   <h2>Appove Institution</h2>
-  <input  id="institutionName" placeholder="Institution Name" />
+  <input id="institutionName" placeholder="Institution Name" />
   <input id="institutionDesc" placeholder="Short Description" />
   <input id="institutionAddress" placeholder="Institution Wallet Address" />
+  <!-- Loading Overlay for Approving Institution -->
+  <div id="loadingOverlayApprove" style="display: none" class="loading-overlay">
+    <div id="loadingIndicator">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
+      <p>Registering Institution...</p>
+    </div>
+  </div>
   <button class="button-action" id="assignRoleBtn">Assign Role</button>
 
   <hr class="divider" />
 
   <h2>Revoke Institution</h2>
   <input id="revokeAddress" placeholder="Institution Wallet Address" />
+  <!-- Loading Overlay for Revoking Institution -->
+  <div id="loadingOverlayRevoke" style="display: none" class="loading-overlay">
+    <div id="loadingIndicator">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
+      <p>Revoking Institution...</p>
+    </div>
+  </div>
+
   <button class="button-action" id="revokeRoleBtn">Revoke Role</button>
 </div>
 
-
-
 <!-- View Certificates -->
 <div class="tab-content" id="certificates">
-
-
   <h2>All Registered Certificates</h2>
   <div>
-  <input id="searchCertificates" placeholder="🔍 Search by Recipient or Cert ID..." />
-  <button class="button-action"  id="loadAllCertsBtn">📜 Refresh Certificates List</button>
-</div>
+    <input
+      id="searchCertificates"
+      placeholder="🔍 Search by Recipient or Cert ID..."
+    />
+    <button class="button-action" id="loadAllCertsBtn">
+      📜 Refresh Certificates List
+    </button>
+  </div>
   <ul id="certificateList"></ul>
-
-  
-
 </div>
 
 <!-- Statistics -->
 <div class="tab-content" id="statistics">
   <h2>Registered Institutions</h2>
-  <input id="searchInstitutions" placeholder="🔍 Search Institution Address..." />
-  <button class="button-action" id="viewInstitutionsBtn">🔍 View Institutions</button>
+  <input
+    id="searchInstitutions"
+    placeholder="🔍 Search Institution Address..."
+  />
+  <button class="button-action" id="viewInstitutionsBtn">
+    🔍 View Institutions
+  </button>
   <ul id="institutionList"></ul>
-  
+
   <hr class="divider" />
 
   <h2>📊 Platform Statistics</h2>
-  <p><strong>Total Institutions:</strong> <span id="totalInstitutions">0</span></p>
-  <p><strong>Total Certificates Issued:</strong> <span id="totalCertificates">0</span></p>
-  <p><strong>Total Revoked Certificates:</strong> <span id="revokedCertificates">0</span></p>
-
+  <p>
+    <strong>Total Institutions:</strong> <span id="totalInstitutions">0</span>
+  </p>
+  <p>
+    <strong>Total Certificates Issued:</strong>
+    <span id="totalCertificates">0</span>
+  </p>
+  <p>
+    <strong>Total Revoked Certificates:</strong>
+    <span id="revokedCertificates">0</span>
+  </p>
 </div>
 
 <!-- Settings -->
 <div class="tab-content" id="settings">
   <h2>Pause/Resume Contract</h2>
-  <button class="button-action revoke-button" id="pauseBtn">⏸️ Pause Contract</button>
+  <button class="button-action revoke-button" id="pauseBtn">
+    ⏸️ Pause Contract
+  </button>
   <button class="button-action" id="unpauseBtn">▶️ Resume Contract</button>
   <p id="contractStatus">Status: <span>Loading...</span></p>
+</div>
+
+<!-- MODAL FOR Confirming INSTITUTION DETAILS -->
+<div id="confirmModal" class="confirmModal">
+  <div class="confirmModal-content">
+    <h3>Confirm Institution Registration</h3>
+    <p><strong>Name:</strong> <span id="confirmName"></span></p>
+    <p><strong>Description:</strong> <span id="confirmDesc"></span></p>
+    <p><strong>Wallet Address:</strong> <span id="confirmAddress"></span></p>
+    <div class="modal-buttons">
+      <button id="confirmYesBtn" class="button-action">Confirm</button>
+      <button id="confirmNoBtn" class="button-secondary">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for rejectiing Institution confirmation  -->
+<!-- MODAL FOR Confirming INSTITUTION REVOCATION -->
+<div id="revokeConfirmModal" class="confirmModal">
+  <div class="confirmModal-content">
+    <h3>Confirm Institution Revocation</h3>
+    <p>You are about to revoke access for the following institution:</p>
+    <p><strong>Name:</strong> <span id="revokeConfirmName"></span></p>
+    <p>
+      <strong>Wallet Address:</strong> <span id="revokeConfirmAddress"></span>
+    </p>
+    <div class="modal-buttons">
+      <button id="confirmRevokeBtn" class="button-action">Yes, Revoke</button>
+      <button id="cancelRevokeBtn" class="button-secondary">Cancel</button>
+    </div>
+  </div>
 </div>

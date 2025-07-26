@@ -495,6 +495,7 @@ input::placeholder {
 #loadingOverlayRole,
 #loadingOverlayRevoke,
 #loadingOverlayRegister,
+#loadingOverlayApprove,
 #loadingOverlayFirst {
   width: 100%;
   height: 100%;
@@ -748,6 +749,55 @@ input::placeholder {
   color: black;
 }
 
+/* Confirm Modal Styling */
+.confirmModal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  max-width: 900px;
+  width: 100%;
+  margin: auto;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding-top: 30px;
+  padding-right: 30px;
+  padding-left: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  animation: fadeIn 0.5s ease-out;
+  color: black;
+}
+
+.confirmModal-content {
+  background: white;
+  padding: 20px;
+  max-width: 500px;
+  margin: 10% auto;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.9);
+}
+
+.modal-buttons {
+  margin-top: 20px;
+  text-align: right;
+}
+
+
+.button-secondary {
+  background-color: #ccc;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-secondary:hover,
+.button-secondary:focus {
+  background-color: red;
+}
 
 
 /* Footer Styling */

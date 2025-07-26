@@ -35,7 +35,7 @@
 
 ## 🌍 Live Deployment
 
-- **Smart Contract:** `0x0297212823C341eA59DD6DfD693fa23Dc0a115Cc`  
+- **Smart Contract:** `0xAb9c4522C84593cCcd902e1402Ea7DB7Be1aDf91`  
 - **Frontend:** [https://trustedcert.onrender.com](https://trustedcert.onrender.com)   
 
 ---

@@ -51,58 +51,53 @@ document.getElementById("loadAllCertsBtn").onclick = async () => {
   loadAllCertificates();
 }
 async function loadAllCertificates() {
-
-
   try {
-      const institutionsRaw = await contract.getInstitutions();
+    const institutionsRaw = await contract.getInstitutions();
+    const institutions = institutionsRaw.wallets.map((wallet, index) => ({
+      name: institutionsRaw.names[index],
+      description: institutionsRaw.descriptions[index],
+      wallet: wallet.toLowerCase(), // Ensure wallet addresses are in lowercase for consistency
+    }));
+    // 🚫 Remove duplicate wallets
+const uniqueInstitutions = institutions.filter(
+  (inst, index, self) =>
+    index === self.findIndex(i => i.wallet.toLowerCase() === inst.wallet.toLowerCase())
+);
+    const certificateList = document.getElementById("certificateList");
+    certificateList.innerHTML = ""; // Clear previous content
 
-      
+    // Create a parent container for certificate cards
+    const certContainer = document.createElement("ul");
+    certContainer.className = "document-list";
 
-      // Convert to expected object format
-      const institutions = institutionsRaw.wallets.map((wallet, index) => ({
-          name: institutionsRaw.names[index],
-          description: institutionsRaw.descriptions[index],
-          wallet: wallet.toLowerCase(), // Ensure wallet addresses are in lowercase for consistency
-      }));
+    for (let i = 0; i < uniqueInstitutions.length; i++) {
+      const walletAddress = uniqueInstitutions[i].wallet;
 
-      const certificateList = document.getElementById("certificateList");
-      certificateList.innerHTML = ""; // Clear previous content
+      // Validate wallet address
+      if (!ethers.utils.isAddress(walletAddress)) {
+        console.warn(`⚠️ Skipping invalid address: ${walletAddress}`);
+        continue;
+      }
 
-      // Create a parent container for certificate cards
-      const certContainer = document.createElement("ul");
-      certContainer.className = "document-list";
+      const instCerts = await contract.getInstitutionCertificates(walletAddress);
 
-      for (let i = 0; i < institutions.length; i++) {
-          const walletAddress = institutions[i].wallet;
-
-          // Validate wallet address
-          if (!ethers.utils.isAddress(walletAddress)) {
-              console.warn(`⚠️ Skipping invalid address: ${walletAddress}`);
-              continue;
-          }
-
-          // Fetch all issued certificates
-          const instCerts = await contract.getInstitutionCertificates(walletAddress);
-          // for (let j = 0; j < instCerts.length; j++) {
-          //     const cert = await contract.verifyCertificate(instCerts[j]);
-
-          const reversedCertIds = [...instCerts].reverse(); // Create a reversed copy
-for (let j = 0; j < reversedCertIds.length; j++) {
-  const cert = await contract.verifyCertificate(reversedCertIds[j]);
-
-              
-              const issueDate = new Date(Number(cert.issuedAt) * 1000).toLocaleDateString();
+      const reversedCertIds = [...instCerts].reverse(); // Create a reversed copy
+      for (let j = 0; j < reversedCertIds.length; j++) {
+        const cert = await contract.verifyCertificate(reversedCertIds[j]);
 
 
-              // Find the issuing institution name
-              const issuingInstitution = institutions.find(inst => inst.wallet === cert.issuedBy.toLowerCase());
-              const issuerName = issuingInstitution ? issuingInstitution.name : cert.issuedBy;
+        const issueDate = new Date(Number(cert.issuedAt) * 1000).toLocaleDateString();
 
-              // Create certificate item
-              const certCard = document.createElement("li");
-              certCard.classList.add("document-item");
 
-              certCard.innerHTML = `
+        // Find the issuing institution name
+        const issuingInstitution = uniqueInstitutions.find(inst => inst.wallet === cert.issuedBy.toLowerCase());
+        const issuerName = issuingInstitution ? issuingInstitution.name : cert.issuedBy;
+
+        // Create certificate item
+        const certCard = document.createElement("li");
+        certCard.classList.add("document-item");
+
+        certCard.innerHTML = `
                 <div class="cert-details">
                     <p><strong>Recipient:</strong> ${cert.recipientName}</p>
                     <p><strong>Title:</strong> ${cert.title}</p>
@@ -118,23 +113,23 @@ for (let j = 0; j < reversedCertIds.length; j++) {
                 </div>
               `;
 
-              // Append certificate card to container
-              certContainer.appendChild(certCard);
-          }
+        // Append certificate card to container
+        certContainer.appendChild(certCard);
       }
+    }
 
-      // Append certificate list to page
-      certificateList.appendChild(certContainer);
+    // Append certificate list to page
+    certificateList.appendChild(certContainer);
 
-      // Attach search functionality
-      document.getElementById("searchCertificates").onkeyup = debounce(() => {
-          filterList("certificateList", document.getElementById("searchCertificates").value);
-      }, 300);
+    // Attach search functionality
+    document.getElementById("searchCertificates").onkeyup = debounce(() => {
+      filterList("certificateList", document.getElementById("searchCertificates").value);
+    }, 300);
 
   } catch (error) {
-      console.error("❌ Error loading certificates:", error);
-  
-      showToast("Error loading certificates.", "error");
+    console.error("❌ Error loading certificates:", error);
+
+    showToast("Error loading certificates.", "error");
   }
 };
 
@@ -143,82 +138,143 @@ function enableAdminFunctions() {
     const name = document.getElementById("institutionName").value.trim();
     const description = document.getElementById("institutionDesc").value.trim();
     const address = document.getElementById("institutionAddress").value.trim();
-  
+
     if (!name || !description || !ethers.utils.isAddress(address)) {
-      
       showToast("❌ Please enter valid institution details.", "error");
       return;
     }
-  
+
     // Check if already registered
-    const existingInstitutions = await contract.getInstitutions();
-    if (existingInstitutions.includes(address)) {
-      
+    const existing = await contract.getInstitutions();
+    if (existing.wallets && existing.wallets.map(w => w.toLowerCase()).includes(address.toLowerCase())) {
       showToast("⚠️ This wallet is already registered as an institution.", "warning");
       return;
     }
-  
-    try {
-      // Ask for confirmation
-      if (!confirm(`Are you sure you want to register "${name}" (${address})?`)) return;
-  
-      const tx = await contract.addInstitution(address, name, description);
-      await tx.wait();
-      showToast("✅ Institution Approved", "success");
-      
-  
-      // Refresh institution list
-      loadInstitutions();
-      loadStats();
-    } catch (err) {
-      console.error("Error assigning role:", err);
-      showToast("❌ Transaction failed", "error");
 
-    }
+    // Show confirmation modal
+    document.getElementById("confirmName").innerText = name;
+    document.getElementById("confirmDesc").innerText = description;
+    document.getElementById("confirmAddress").innerText = address;
+    document.getElementById("confirmModal").style.display = "block";
+
+    // Confirm
+    document.getElementById("confirmYesBtn").onclick = async () => {
+      document.getElementById("confirmModal").style.display = "none";
+      try {
+        document.getElementById("loadingOverlayApprove").style.display = "flex";
+        const tx = await contract.addInstitution(address, name, description);
+        await tx.wait();
+        document.getElementById("institutionName").value = ""; // Clear input
+document.getElementById("institutionDesc").value = ""; // Clear input
+document.getElementById("institutionAddress").value = "";
+
+        document.getElementById("loadingOverlayApprove").style.display = "none";
+        showToast("✅ Institution registered successfully!", "success");
+        loadInstitutions();
+        loadStats();
+      } catch (err) {
+        console.error("Error assigning role:", err);
+        showToast("❌ Transaction failed", "error");
+      }
+    };
+
+    // Cancel
+    document.getElementById("confirmNoBtn").onclick = () => {
+      document.getElementById("confirmModal").style.display = "none";
+    };
   };
-  
 
 
 
-
+  // Revoke institution role
   document.getElementById("revokeRoleBtn").onclick = async () => {
     const address = document.getElementById("revokeAddress").value.trim();
-    if (!ethers.utils.isAddress(address)) {
-      showToast("❌ Invalid address", "error");
 
+    if (!ethers.utils.isAddress(address)) {
+      showToast("❌ Invalid wallet address", "error");
       return;
     }
 
     try {
-      const tx = await contract.removeInstitution(address);
-      await tx.wait();
+      // Fetch existing institutions
+      const data = await contract.getInstitutions();
+      const institutions = data.wallets.map((wallet, index) => ({
+        name: data.names[index],
+        description: data.descriptions[index],
+        wallet: wallet.toLowerCase(),
+      }));
 
-      showToast("✅ Institution revoked!", "success");
-      
-      loadStats(); // Refresh stats
+      const match = institutions.find(inst => inst.wallet === address.toLowerCase());
+
+      if (!match) {
+        showToast("⚠️ This address is not registered as an institution.", "warning");
+        return;
+      }
+
+      // Populate modal and show
+      document.getElementById("revokeConfirmName").innerText = match.name;
+      document.getElementById("revokeConfirmAddress").innerText = match.wallet;
+      document.getElementById("revokeConfirmModal").style.display = "block";
+
+      // Confirm
+      document.getElementById("confirmRevokeBtn").onclick = async () => {
+        document.getElementById("revokeConfirmModal").style.display = "none";
+
+        try {
+          document.getElementById("loadingOverlayRevoke").style.display = "flex";
+          const tx = await contract.removeInstitution(address);
+          await tx.wait();
+          document.getElementById("revokeAddress").value = ""; // Clear input
+          document.getElementById("loadingOverlayRevoke").style.display = "none";
+          showToast("✅ Institution revoked!", "success");
+          loadInstitutions();
+          loadStats();
+        } catch (err) {
+          console.error("Error revoking role:", err);
+
+          if (err.code === 4001) {
+            showToast("⚠️ Transaction rejected by user", "warning");
+          } else {
+            showToast("❌ Revocation failed", "error");
+          }
+        }
+      };
+
+      // Cancel
+      document.getElementById("cancelRevokeBtn").onclick = () => {
+        document.getElementById("revokeConfirmModal").style.display = "none";
+      };
+
     } catch (err) {
-      console.error("Error revoking role:", err);
-
-      showToast("❌ Transaction failed", "error");
+      console.error("Error checking institutions:", err);
+      showToast("❌ Unable to verify institution.", "error");
     }
   };
 
+
+  // Load institutions on button click
   document.getElementById("viewInstitutionsBtn").onclick = async () => {
     loadInstitutions();
   };
 
   async function loadInstitutions() {
-  const institutionsRaw = await contract.getInstitutions();
+    const institutionsRaw = await contract.getInstitutions();
 
-  const institutions = institutionsRaw.wallets.map((wallet, index) => ({
-    name: institutionsRaw.names[index],
-    description: institutionsRaw.descriptions[index],
-    wallet: wallet,
-  }));
+    const institutions = institutionsRaw.wallets.map((wallet, index) => ({
+      name: institutionsRaw.names[index],
+      description: institutionsRaw.descriptions[index],
+      wallet: wallet,
+    }));
 
-  const list = document.getElementById("institutionList");
+    // 🚫 Remove duplicate wallets
+const uniqueInstitutions = institutions.filter(
+  (inst, index, self) =>
+    index === self.findIndex(i => i.wallet.toLowerCase() === inst.wallet.toLowerCase())
+);
 
-  list.innerHTML = institutions.map(inst => `
+    const list = document.getElementById("institutionList");
+
+    list.innerHTML = uniqueInstitutions.map(inst => `
     <li class="institution-card">
       <h4>${inst.name}</h4>
       <p><em>${inst.description}</em></p>
@@ -226,10 +282,10 @@ function enableAdminFunctions() {
     </li>
   `).join("");
 
-  document.getElementById("searchInstitutions").onkeyup = debounce(() => {
-    filterList("institutionList", document.getElementById("searchInstitutions").value);
-  }, 300);
-}
+    document.getElementById("searchInstitutions").onkeyup = debounce(() => {
+      filterList("institutionList", document.getElementById("searchInstitutions").value);
+    }, 300);
+  }
 
 
 
@@ -259,7 +315,7 @@ function enableAdminFunctions() {
 // 🔢 **Load Platform Statistics**
 async function loadStats() {
   try {
-    const institutionsRaw = await contract.getInstitutions(); 
+    const institutionsRaw = await contract.getInstitutions();
     console.log("Fetched Institutions:", institutionsRaw); // Debugging log
 
     // Rebuild institutions array
@@ -269,14 +325,20 @@ async function loadStats() {
       wallet: wallet
     }));
 
-    console.log("Reconstructed Institutions:", institutions);
+    // 🚫 Remove duplicate wallets
+const uniqueInstitutions = institutions.filter(
+  (inst, index, self) =>
+    index === self.findIndex(i => i.wallet.toLowerCase() === inst.wallet.toLowerCase())
+);
+
+    console.log("Reconstructed Institutions:", uniqueInstitutions);
 
     let totalCertificates = 0;
     let revokedCertificates = 0;
 
     // Fetch all certificates issued by each institution
-    for (let i = 0; i < institutions.length; i++) {
-      const instCerts = await contract.getInstitutionCertificates(institutions[i].wallet);
+    for (let i = 0; i < uniqueInstitutions.length; i++) {
+      const instCerts = await contract.getInstitutionCertificates(uniqueInstitutions[i].wallet);
       totalCertificates += instCerts.length;
 
       for (let j = 0; j < instCerts.length; j++) {
@@ -286,11 +348,11 @@ async function loadStats() {
     }
 
     // Update statistics on the UI
-    document.getElementById("totalInstitutions").innerText = institutions.length;
+    document.getElementById("totalInstitutions").innerText = uniqueInstitutions.length;
     document.getElementById("totalCertificates").innerText = totalCertificates;
     document.getElementById("revokedCertificates").innerText = revokedCertificates;
 
-    console.log("📊 Stats Updated: ", { totalInstitutions: institutions.length, totalCertificates, revokedCertificates });
+    console.log("📊 Stats Updated: ", { totalInstitutions: uniqueInstitutions.length, totalCertificates, revokedCertificates });
   } catch (err) {
     console.error("Error loading statistics:", err);
   }
