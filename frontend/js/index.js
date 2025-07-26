@@ -145,6 +145,28 @@ async function loadPage(role) {
   }
 }
 
+// ✅ Modal for End-User License Agreement & Privacy Policy
+document.getElementById("openPolicyModal").addEventListener("click", function(e) {
+  e.preventDefault();
+  document.getElementById("policyModal").style.display = "block";
+});
+
+document.getElementById("closeModal").addEventListener("click", function() {
+  document.getElementById("policyModal").style.display = "none";
+});
+
+document.getElementById("acceptPolicyBtn").addEventListener("click", function() {
+  showToast("✅ Policy Accepted. Thank you!", "success");
+  document.getElementById("policyModal").style.display = "none";
+});
+
+window.addEventListener("click", function(event) {
+  const modal = document.getElementById("policyModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
 
 // ✅ Toast Notification Function
 window.showToast = function(message, type) {
