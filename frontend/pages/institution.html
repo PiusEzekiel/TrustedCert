@@ -53,11 +53,7 @@
 
   </div>
 
-  <!-- <div id="institutionArea"> -->
-  
 
-
-    <!-- <div id="registeredCert"></div> -->
 
   <!-- Manage Certificates Section -->
   <div class="tab-content" id="manageTab">
@@ -70,7 +66,49 @@
       <p><strong>Total Certificates:</strong> <span id="totalCerts">0</span></p>
       <p><strong>Revoked Certificates:</strong> <span id="revokedCerts">0</span></p>
     </div>
+      <!-- Loading Overlay for Revoking Institution -->
+  <div id="loadingOverlayRevoke" style="display: none" class="loading-overlay">
+    <div id="loadingIndicator">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
+      <p>Revoking...</p>
+    </div>
+  </div>
 
     <div id="certificateList"></div>
   </div>
+
+<!-- MODAL FOR Confirming CERTIFICATE ISSUANCE -->
+<div id="confirmCertModal" class="confirmModal">
+  <div class="confirmModal-content">
+    <h3>Confirm Certificate Issuance</h3>
+    <p><strong>Recipient Name:</strong> <span id="confirmCertName"></span></p>
+    <p><strong>Certificate Title:</strong> <span id="confirmCertTitle"></span></p>
+    <p><strong>External ID:</strong> <span id="confirmCertExternalId"></span></p>
+    <div id="confirmCertPreview" style="margin-top: 10px;"></div>
+    <div class="modal-buttons">
+      <button id="confirmCertYesBtn" class="button-action">Confirm</button>
+      <button id="confirmCertNoBtn" class="button-secondary">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL: Confirm Certificate Revocation -->
+<div id="confirmRevokeCertModal" class="confirmModal">
+  <div class="confirmModal-content">
+    <h3>Confirm Certificate Revocation</h3>
+    <p>You are about to revoke the following certificate:</p>
+    <p><strong>Certificate ID:</strong> <span id="confirmRevokeId"></span></p>
+    <p><strong>Recipient Name:</strong> <span id="confirmRevokeName"></span></p>
+    <p><strong>Certificate Title:</strong> <span id="confirmRevokeTitle"></span></p>
+    <p><strong>External ID:</strong> <span id="confirmRevokeExternalId"></span></p>
+    <div id="confirmRevokePreview" style="margin-top: 10px;"></div>
+    <div class="modal-buttons">
+      <button id="confirmRevokeCertBtn" class="button-action">Yes, Revoke</button>
+      <button id="cancelRevokeCertBtn" class="button-secondary">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
 

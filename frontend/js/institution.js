@@ -131,28 +131,32 @@ function enableInstitutionActions() {
     document.getElementById("cidDisplay").style.display = "none"; // Hide
   });
 
-
+  // Register certificate 
   document.getElementById("registerBtn").onclick = async () => {
-    const name = document.getElementById("recipientName").value.trim();
-    const title = document.getElementById("title").value.trim();
-    const externalId = document.getElementById("externalId").value.trim();
-    const previewArea = document.getElementById("previewArea");
+  const name = document.getElementById("recipientName").value.trim();
+  const title = document.getElementById("title").value.trim();
+  const externalId = document.getElementById("externalId").value.trim();
+  const previewArea = document.getElementById("previewArea");
 
-    if (!uploadedCID) {
-      showToast("❌ Please upload a certificate file first!", "warning");
-      return;
-    }
+  if (!uploadedCID) {
+    showToast("❌ Please upload a certificate file first!", "warning");
+    return;
+  }
+
+  // Populate modal
+  document.getElementById("confirmCertName").innerText = name;
+  document.getElementById("confirmCertTitle").innerText = title;
+  document.getElementById("confirmCertExternalId").innerText = externalId;
+  document.getElementById("confirmCertPreview").innerHTML = previewArea.innerHTML;
+  document.getElementById("confirmCertModal").style.display = "block";
+
+  // Confirm
+  document.getElementById("confirmCertYesBtn").onclick = async () => {
+    document.getElementById("confirmCertModal").style.display = "none";
+    document.getElementById("loadingOverlayRegister").style.display = "flex";
+    document.getElementById("registerBtn").disabled = true;
 
     try {
-
-      // ✅ Show loading animation
-      document.getElementById("loadingOverlayRegister").style.display = "flex"; // Show
-
-
-      // ✅ Disable button to prevent multiple clicks
-      document.getElementById("registerBtn").disabled = true;
-
-      // ✅ Register the certificate on the blockchain
       const tx = await contract.registerCertificate(name, title, uploadedCID, externalId);
       await tx.wait();
 
@@ -162,35 +166,31 @@ function enableInstitutionActions() {
 
       showToast("✅ Certificate registered successfully!", "success");
 
-      // ✅ Hide loading animation
-      document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
-
-
-      // ✅ Clear input fields
+      // Clear inputs and reload
       document.getElementById("recipientName").value = "";
       document.getElementById("title").value = "";
       document.getElementById("externalId").value = "";
-      previewArea.innerHTML = ""; // Clear preview
+      previewArea.innerHTML = "";
 
-      // ✅ Show the newly registered certificate
       showRegisteredCertificateCard(name, title, uploadedCID, latestId);
-      loadStats()
-
-      // ✅ Load all certificates again
+      loadStats();
       loadCertificates();
 
     } catch (err) {
       console.error("Register Error:", err);
       showToast("❌ Error registering certificate.", "error");
-
-      //  ✅ Hide loading animation
-      document.getElementById("loadingOverlayRegister").style.display = "none"; // Hide
-
     }
 
-    // ✅ Re-enable the button after completion
+    document.getElementById("loadingOverlayRegister").style.display = "none";
     document.getElementById("registerBtn").disabled = false;
   };
+
+  // Cancel
+  document.getElementById("confirmCertNoBtn").onclick = () => {
+    document.getElementById("confirmCertModal").style.display = "none";
+  };
+};
+
 
   // ✅ Function to show the newly registered certificate
   function showRegisteredCertificateCard(name, title, cid, id) {
@@ -317,18 +317,46 @@ async function loadStats() {
 // Revocation globally exposed
 window.revokeCert = async function (id) {
   try {
-    const tx = await contract.revokeCertificate(id);
-    await tx.wait();
-    loadStats(); // Reload stats after revocation
-    loadCertificates(); // Reload certificates after revocation
+    const cert = await contract.verifyCertificate(id);
 
+    // Populate modal
+    document.getElementById("confirmRevokeId").innerText = id;
+    document.getElementById("confirmRevokeName").innerText = cert.recipientName;
+    document.getElementById("confirmRevokeTitle").innerText = cert.title;
+    document.getElementById("confirmRevokeExternalId").innerText = cert.externalId;
+    document.getElementById("confirmRevokePreview").innerHTML = `<img src="https://ipfs.io/ipfs/${cert.cid}" width="200" />`;
+    document.getElementById("confirmRevokeCertModal").style.display = "block";
 
-    showToast("✅ Certificate revoked!", "success");
+    // Confirm revocation
+    document.getElementById("confirmRevokeCertBtn").onclick = async () => {
+      document.getElementById("confirmRevokeCertModal").style.display = "none";
+      document.getElementById("loadingOverlayRevoke").style.display = "flex";
+
+      try {
+        const tx = await contract.revokeCertificate(id);
+        await tx.wait();
+
+        showToast("✅ Certificate revoked!", "success");
+        loadStats();
+        loadCertificates();
+      } catch (err) {
+        console.error("Revoke Error:", err);
+        showToast("❌ Error revoking certificate.", "error");
+      }
+
+      document.getElementById("loadingOverlayRevoke").style.display = "none";
+    };
+
+    // Cancel button
+    document.getElementById("cancelRevokeCertBtn").onclick = () => {
+      document.getElementById("confirmRevokeCertModal").style.display = "none";
+    };
   } catch (err) {
-    console.error("Revoke Error:", err);
-    showToast("❌ Error revoking certificate.", "error");
+    console.error("Error loading certificate for revocation:", err);
+    showToast("❌ Could not load certificate info.", "error");
   }
 };
+
 
 
 

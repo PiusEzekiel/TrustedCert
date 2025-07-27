@@ -133,6 +133,7 @@ const uniqueInstitutions = institutions.filter(
   }
 };
 
+// Function to enable Institution role
 function enableAdminFunctions() {
   document.getElementById("assignRoleBtn").onclick = async () => {
     const name = document.getElementById("institutionName").value.trim();

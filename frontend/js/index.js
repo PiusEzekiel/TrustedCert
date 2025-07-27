@@ -110,7 +110,7 @@ async function determineUserRole(address) {
     }
   } catch (error) {
     console.error("Role Determination Error:", error);
-    showToast("❌ Unable to determine role. Reverting to Verify page.", "error");
+    showToast("No role. Reverting to Verify page.", "error");
 
     // Hide overlay and fallback to verify page
     document.getElementById("loadingOverlayRole").style.display = "none";
@@ -165,6 +165,26 @@ window.addEventListener("click", function(event) {
   if (event.target === modal) {
     modal.style.display = "none";
   }
+});
+
+window.addEventListener("click", function(event) {
+  const modals = [
+    document.getElementById("confirmRevokeCertModal"),
+    document.getElementById("confirmCertModal"),
+    document.getElementById("confirmRevokeInstitutionModal"),
+    document.getElementById("revokeConfirmModal"),
+    document.getElementById("revokeInstitutionModal"),
+    document.getElementById("confirmModal"),
+    
+
+
+  ];
+
+  modals.forEach(modal => {
+    if (modal && event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
 });
 
 
