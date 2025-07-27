@@ -55,6 +55,7 @@ window.onload = async () => {
     const abiRes = await fetch("./abi/CertificateRegistry.json");
     const abiJson = await abiRes.json();
     contract = new ethers.Contract(CONTRACT_ADDRESS, abiJson.abi, signer);
+    console.log("✅ Using contract address:", CONTRACT_ADDRESS);
 
     showToast("✅ Wallet connected!", "success");
 
@@ -84,12 +85,17 @@ async function determineUserRole(address) {
     document.getElementById("loadingOverlayRole").style.display = "flex"; // Show loading animation
 
     if (!contract) throw new Error("Smart contract not initialized");
+    console.log("Checking roles for:", address);
+
+
 
     const adminRole = await contract.DEFAULT_ADMIN_ROLE();
     const institutionRole = await contract.INSTITUTION_ROLE();
 
     const isAdmin = await contract.hasRole(adminRole, address);
     const isInstitution = await contract.hasRole(institutionRole, address);
+    console.log("Manual Role Check:", { isAdmin, isInstitution });
+
 
     // ✅ Wait at least 3 seconds before proceeding
     await new Promise(resolve => setTimeout(resolve, 3000));
@@ -175,7 +181,7 @@ window.addEventListener("click", function(event) {
     document.getElementById("revokeConfirmModal"),
     document.getElementById("revokeInstitutionModal"),
     document.getElementById("confirmModal"),
-    
+
 
 
   ];
