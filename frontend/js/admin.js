@@ -34,9 +34,9 @@ let provider, signer, contract;
   const hasRole = await contract.hasRole(adminRole, userAddress);
 
   if (hasRole) {
-    loadAllCertificates(); // ✅ Load certificates on page load
+    loadAllCertificates();
     enableAdminFunctions();
-    loadStats(); // Load statistics on page load
+    loadStats();
 
   } else {
     document.getElementById("adminArea").innerHTML = `
@@ -56,9 +56,8 @@ async function loadAllCertificates() {
     const institutions = institutionsRaw.wallets.map((wallet, index) => ({
       name: institutionsRaw.names[index],
       description: institutionsRaw.descriptions[index],
-      wallet: wallet.toLowerCase(), // Ensure wallet addresses are in lowercase for consistency
+      wallet: wallet.toLowerCase(),
     }));
-    // 🚫 Remove duplicate wallets
 const uniqueInstitutions = institutions.filter(
   (inst, index, self) =>
     index === self.findIndex(i => i.wallet.toLowerCase() === inst.wallet.toLowerCase())
@@ -75,7 +74,7 @@ const uniqueInstitutions = institutions.filter(
 
       // Validate wallet address
       if (!ethers.utils.isAddress(walletAddress)) {
-        console.warn(`⚠️ Skipping invalid address: ${walletAddress}`);
+        console.warn(`Skipping invalid address: ${walletAddress}`);
         continue;
       }
 

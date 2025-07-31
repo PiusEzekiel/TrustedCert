@@ -15,7 +15,7 @@ await loadConfig();
 
 let contract;
 
-// ✅ Ensure script waits until content is fully loaded
+//Ensure script waits until content is fully loaded
 
 const provider = new ethers.providers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/PSyOkmTF8dSBO9VA2dDXPxjBJJfUblcy");
 
@@ -26,9 +26,7 @@ if (!abiJson || !abiJson.abi) throw new Error("Invalid ABI");
 
 contract = new ethers.Contract(CONTRACT_ADDRESS, abiJson.abi, provider);
 
-// ✅ Retry finding verifyBtn after #app is updated
 function attachVerifyButton() {
-  console.log("🔍 Looking for #verifyBtn...");
 
   const verifyBtn = document.getElementById("verifyBtn");
   const resultDiv = document.getElementById("result");
@@ -139,6 +137,5 @@ if (copySampleCertId) {
 }
 
 
-// ✅ Wait for the page to load, then attach event listener
 attachVerifyButton();
 // });
