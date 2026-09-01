@@ -3,7 +3,7 @@
 const API_BASE_URL = "https://trustedcert-backend.onrender.com";
 const SEPOLIA_CHAIN_ID = 11155111;
 const SEPOLIA_CHAIN_ID_HEX = "0xaa36a7";
-const APP_VERSION = "20260901-clean-routes";
+const APP_VERSION = "20260901-no-app-hash";
 
 let CONTRACT_ADDRESS;
 let activeRoleScript;
@@ -70,10 +70,31 @@ async function ensureSepoliaNetwork() {
   return switchToSepolia();
 }
 
-window.onload = async () => {
-  if (window.location.pathname.endsWith("/index.html")) {
-    window.history.replaceState(null, "", `/${window.location.search}${window.location.hash}`);
+function normalizeMainUrl() {
+  const isMainRoute = window.location.pathname === "/" || window.location.pathname.endsWith("/index.html");
+  if (!isMainRoute) return;
+
+  const cleanUrl = `/${window.location.search}`;
+  if (window.location.pathname !== "/" || window.location.hash === "#app") {
+    window.history.replaceState(null, "", cleanUrl);
   }
+}
+
+function attachCleanScrollLinks() {
+  document.querySelectorAll("[data-scroll-target]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const target = document.getElementById(link.dataset.scrollTarget);
+      if (!target) return;
+
+      event.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.history.replaceState(null, "", `/${window.location.search}`);
+    });
+  });
+}
+
+window.onload = async () => {
+  normalizeMainUrl();
 
   document.getElementById("loadingOverlayFirst").style.display = "flex"; // Show loading animation
   await loadConfig();
@@ -104,6 +125,8 @@ window.onload = async () => {
   mobileHeaderPanel?.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => setMobileMenuOpen(false));
   });
+
+  attachCleanScrollLinks();
 
   document.addEventListener("click", (event) => {
     if (!siteHeader?.classList.contains("is-menu-open")) return;

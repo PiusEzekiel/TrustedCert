@@ -22,7 +22,7 @@
     integrity="sha384-GSJP6bR4yv1SbLGhL+ntxb4LDi6RC5j8eM8OAh5lwPYdvj9cflIWJiFZdAFr2gyP"
     crossorigin="anonymous"
   />
-  <link rel="stylesheet" href="styles.css?v=20260901-clean-routes">
+  <link rel="stylesheet" href="styles.css?v=20260901-no-app-hash">
 </head>
 
 <body>
@@ -82,7 +82,7 @@
 
     <div class="header-panel" id="mobileHeaderPanel">
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="#app">Verify</a>
+        <a href="/" data-scroll-target="app">Verify</a>
         <a href="/how-it-works/">How it works</a>
         <a href="research/">Research</a>
       </nav>
@@ -142,7 +142,7 @@
       <article class="grant-card">
         <h3>Verify records for <mark class="mark-gold">employers</mark></h3>
         <p>Confirm certificate authenticity without contacting the issuing office.</p>
-        <a href="#app" class="grant-pill grant-pill-gold">Verify now</a>
+        <a href="/" class="grant-pill grant-pill-gold" data-scroll-target="app">Verify now</a>
       </article>
       <article class="grant-card">
         <h3>Issue records for <mark class="mark-green">academics</mark></h3>
@@ -152,7 +152,7 @@
       <article class="grant-card">
         <h3>Use <mark class="mark-blue">committed trust</mark> on-chain</h3>
         <p>Keep issuer roles, certificate status, and document previews in one flow.</p>
-        <a href="#app" class="grant-pill grant-pill-blue">Explore</a>
+        <a href="/" class="grant-pill grant-pill-blue" data-scroll-target="app">Explore</a>
       </article>
     </section>
 
@@ -187,6 +187,6 @@
     integrity="sha384-HV48j9xMNfX80v1dhiML90VeD4a38xrehnBK+dNSSe8P4fija/zP36u52q7TpB6O"
     crossorigin="anonymous"
   ></script>
-  <script defer type="module" src="js/index.js?v=20260901-clean-routes"></script>
+  <script defer type="module" src="js/index.js?v=20260901-no-app-hash"></script>
 </body>
 </html>

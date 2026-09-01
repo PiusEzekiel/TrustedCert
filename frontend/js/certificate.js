@@ -78,7 +78,7 @@ function renderError(message) {
     <div class="status-card status-card-error">
       <strong>Certificate details unavailable</strong>
       <p>${message}</p>
-      <a class="button-action detail-link" href="/#app">Return to verifier</a>
+      <a class="button-action detail-link" href="/">Return to verifier</a>
     </div>
   `;
 }
