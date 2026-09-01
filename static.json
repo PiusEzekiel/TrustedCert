@@ -2,6 +2,15 @@
     "root": "frontend",
     "routes": {
       "/**": "index.html"
+    },
+    "headers": {
+      "/**": {
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://gateway.pinata.cloud; frame-src 'self' blob: https://docs.google.com https://drive.google.com https://gateway.pinata.cloud; connect-src 'self' https://trustedcert-backend.onrender.com https://eth-sepolia.g.alchemy.com https://gateway.pinata.cloud; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+      }
     }
   }
   

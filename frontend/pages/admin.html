@@ -1,102 +1,104 @@
 <div class="dashboard-header">
+  <span class="eyebrow">Platform control</span>
   <h3>Admin Dashboard</h3>
-  <p>Welcome, admin! Manage institutions and certificates.</p>
+  <p>Approve issuer wallets, review certificates, monitor network activity, and manage contract controls.</p>
 </div>
 
-<!-- TAB NAVIGATION -->
-<div class="tabs">
-  <button class="tab-button active" data-tab="institutions">
-    🏛️ Institutions
-  </button>
+<div class="tabs admin-tabs">
+  <button class="tab-button active" data-tab="institutions">Institutions</button>
   <button class="tab-button" data-tab="certificates">Certificates</button>
   <button class="tab-button" data-tab="statistics">Statistics</button>
-  <button class="tab-button" data-tab="settings">⚙️ Settings</button>
+  <button class="tab-button" data-tab="settings">Settings</button>
 </div>
 
-<!-- TAB CONTENT -->
-
-<!-- Manage Institutions -->
 <div class="tab-content active" id="institutions">
-  <h2>Appove Institution</h2>
-  <input id="institutionName" placeholder="Institution Name" />
-  <input id="institutionDesc" placeholder="Short Description" />
-  <input id="institutionAddress" placeholder="Institution Wallet Address" />
-  <!-- Loading Overlay for Approving Institution -->
+  <div class="section-heading">
+    <h2>Approve Institution</h2>
+    <p>Register a trusted institution wallet and profile.</p>
+  </div>
+
+  <input id="institutionName" placeholder="Institution name" />
+  <input id="institutionDesc" placeholder="Short description" />
+  <input id="institutionAddress" placeholder="Institution wallet address" />
+
   <div id="loadingOverlayApprove" style="display: none" class="loading-overlay">
     <div id="loadingIndicator">
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
-      <p>Registering Institution...</p>
+      <span class="loader-dot"></span>
+      <p>Registering institution...</p>
     </div>
   </div>
+
   <button class="button-action" id="assignRoleBtn">Assign Role</button>
 
   <hr class="divider" />
 
-  <h2>Revoke Institution</h2>
-  <input id="revokeAddress" placeholder="Institution Wallet Address" />
-  <!-- Loading Overlay for Revoking Institution -->
+  <div class="section-heading">
+    <h2>Revoke Institution</h2>
+    <p>Remove issuer access from an institution wallet.</p>
+  </div>
+
+  <input id="revokeAddress" placeholder="Institution wallet address" />
+
   <div id="loadingOverlayRevoke" style="display: none" class="loading-overlay">
     <div id="loadingIndicator">
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
-      <p>Revoking...</p>
+      <span class="loader-dot"></span>
+      <p>Revoking institution...</p>
     </div>
   </div>
 
-  <button class="button-action" id="revokeRoleBtn">Revoke Role</button>
+  <button class="button-action revoke-button" id="revokeRoleBtn">Revoke Role</button>
 </div>
 
-<!-- View Certificates -->
 <div class="tab-content" id="certificates">
-  <h2>All Registered Certificates</h2>
-  <div>
-    <input
-      id="searchCertificates"
-      placeholder="🔍 Search by Recipient or Cert ID..."
-    />
-    <button class="button-action" id="loadAllCertsBtn">Refresh Certificates List</button>
+  <div class="section-heading">
+    <h2>All Certificates</h2>
+    <p>Inspect certificate records from every registered institution.</p>
   </div>
-  <ul id="certificateList"></ul>
+
+  <div class="input-row">
+    <input id="searchCertificates" placeholder="Search by recipient or certificate ID" />
+    <button class="button-action" id="loadAllCertsBtn">Refresh</button>
+  </div>
+
+  <div id="certificateList"></div>
 </div>
 
-<!-- Statistics -->
 <div class="tab-content" id="statistics">
-  <h2>Registered Institutions</h2>
-  <input
-    id="searchInstitutions"
-    placeholder="🔍 Search Institution Address..."
-  />
-  <button class="button-action" id="viewInstitutionsBtn">
-    🔍 View Institutions
-  </button>
+  <div class="section-heading">
+    <h2>Registered Institutions</h2>
+    <p>Search issuer wallets and review platform totals.</p>
+  </div>
+
+  <div class="input-row">
+    <input id="searchInstitutions" placeholder="Search institution address" />
+    <button class="button-action" id="viewInstitutionsBtn">View</button>
+  </div>
+
   <ul id="institutionList"></ul>
 
   <hr class="divider" />
 
-  <h2>📊 Platform Statistics</h2>
-  <p>
-    <strong>Total Institutions:</strong> <span id="totalInstitutions">0</span>
-  </p>
-  <p>
-    <strong>Total Certificates Issued:</strong>
-    <span id="totalCertificates">0</span>
-  </p>
-  <p>
-    <strong>Total Revoked Certificates:</strong>
-    <span id="revokedCertificates">0</span>
-  </p>
+  <div id="platformStats" class="stats-grid">
+    <p><strong>Total Institutions</strong> <span id="totalInstitutions">0</span></p>
+    <p><strong>Total Certificates Issued</strong> <span id="totalCertificates">0</span></p>
+    <p><strong>Total Revoked Certificates</strong> <span id="revokedCertificates">0</span></p>
+  </div>
 </div>
 
-<!-- Settings -->
 <div class="tab-content" id="settings">
-  <h2>Pause/Resume Contract</h2>
-  <button class="button-action revoke-button" id="pauseBtn">
-    ⏸️ Pause Contract
-  </button>
-  <button class="button-action" id="unpauseBtn">▶️ Resume Contract</button>
+  <div class="section-heading">
+    <h2>Contract Controls</h2>
+    <p>Pause or resume certificate operations at the smart-contract level.</p>
+  </div>
+
+  <div class="control-grid">
+    <button class="button-action revoke-button" id="pauseBtn">Pause Contract</button>
+    <button class="button-action" id="unpauseBtn">Resume Contract</button>
+  </div>
+
   <p id="contractStatus">Status: <span>Loading...</span></p>
 </div>
 
-<!-- MODAL FOR Confirming INSTITUTION DETAILS -->
 <div id="confirmModal" class="confirmModal">
   <div class="confirmModal-content">
     <h3>Confirm Institution Registration</h3>
@@ -110,16 +112,12 @@
   </div>
 </div>
 
-<!-- Modal for rejectiing Institution confirmation  -->
-
 <div id="revokeConfirmModal" class="confirmModal">
   <div class="confirmModal-content">
     <h3>Confirm Institution Revocation</h3>
     <p>You are about to revoke access for the following institution:</p>
     <p><strong>Name:</strong> <span id="revokeConfirmName"></span></p>
-    <p>
-      <strong>Wallet Address:</strong> <span id="revokeConfirmAddress"></span>
-    </p>
+    <p><strong>Wallet Address:</strong> <span id="revokeConfirmAddress"></span></p>
     <div class="modal-buttons">
       <button id="confirmRevokeBtn" class="button-action">Yes, Revoke</button>
       <button id="cancelRevokeBtn" class="button-secondary">Cancel</button>

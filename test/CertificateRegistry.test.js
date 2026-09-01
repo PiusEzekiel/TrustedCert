@@ -1,5 +1,7 @@
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
+import { expect } from "chai";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 
 describe("TrustedCert CertificateRegistry Unit Tests", function () {
   let CertificateRegistry;
@@ -189,7 +191,7 @@ describe("TrustedCert CertificateRegistry Unit Tests", function () {
 
       await expect(
         registry.connect(institution1).registerCertificate("Unpaused", "Back", "cid9", "")
-      ).to.not.be.reverted;
+      ).to.not.revert(ethers);
     });
   });
 });

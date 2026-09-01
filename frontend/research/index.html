@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Read the research behind TrustedCert's blockchain certificate issuance and verification system."
+  />
+  <title>TrustedCert | Research</title>
+  <link rel="canonical" href="/research/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=20260831-research-embed">
+</head>
+
+<body class="dashboard-active">
+  <header class="site-header">
+    <a href="../index.html" class="branding-link" aria-label="TrustedCert home">
+      <div class="branding">
+        <img src="../images/trusted_cert_logo.png" alt="TrustedCert logo" class="logo" />
+        <div class="branding-text">
+          <h1>TrustedCert</h1>
+          <p>Decentralized credential trust layer</p>
+        </div>
+      </div>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#app">Verify</a>
+      <a href="../how-it-works.html">How it works</a>
+      <a href="./" aria-current="page">Research</a>
+    </nav>
+
+    <a class="header-action" href="../index.html#app">Launch verifier</a>
+  </header>
+
+  <main class="page-shell research-page">
+    <section class="research-hero">
+      <div>
+        <span class="eyebrow">Research foundation</span>
+        <h2>TrustedCert research and implementation notes.</h2>
+        <p>
+          A first-party reading page for the research behind TrustedCert's blockchain
+          certificate issuance, IPFS document storage, and public verification model.
+        </p>
+        <div class="research-actions">
+          <a
+            class="button-action research-doc-link"
+            href="https://docs.google.com/document/d/1QbkFbXIYxZsanMbIzavKHfI5zeJOds4Z/edit?usp=sharing&amp;ouid=111341560365021152060&amp;rtpof=true&amp;sd=true"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View full research
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <article class="research-viewer research-paper" aria-label="TrustedCert research paper">
+      <section class="paper-section">
+        <p class="paper-label">Abstract</p>
+        <h3>Blockchain-based academic credential verification for African higher education</h3>
+        <p>
+          The integrity of academic credentials is a growing concern for institutions across Africa,
+          where traditional verification methods are often manual, fragmented, and vulnerable to fraud.
+          TrustedCert explores a blockchain-based academic credential verification system tailored to
+          African higher education, integrating smart contracts, IPFS, and Ethereum to securely issue,
+          revoke, and verify credentials.
+        </p>
+        <p>
+          The prototype was tested on the Ethereum Sepolia testnet using simulated data. The findings
+          show that blockchain can help curb credential fraud, reduce administrative burden, and improve
+          international trust in African academic qualifications.
+        </p>
+      </section>
+
+      <section class="paper-section">
+        <p class="paper-label">Background</p>
+        <h3>The credential trust problem</h3>
+        <p>
+          Academic fraud undermines institutional credibility, graduate employability, and confidence
+          in cross-border qualification checks. Manual verification through physical certificates or
+          direct institutional correspondence is slow, expensive, and vulnerable to tampering.
+        </p>
+        <p>
+          TrustedCert responds to this gap with a decentralized verification model where approved
+          institutions issue certificate records, documents are stored with content identifiers, and
+          employers or admissions teams can verify authenticity without private back-channel requests.
+        </p>
+      </section>
+
+      <section class="paper-section">
+        <p class="paper-label">Problem Statement</p>
+        <h3>Existing platforms are often centralized, costly, or hard to adapt</h3>
+        <p>
+          Many current digital credentialing systems depend on centralized vendors, closed hosting
+          models, or technical deployment paths that are difficult for low-resource institutions to
+          maintain. TrustedCert is designed as a modular, open-source, smart-contract-based alternative
+          that can be adapted for regional education systems.
+        </p>
+      </section>
+
+      <section class="paper-section">
+        <p class="paper-label">Objectives</p>
+        <h3>What the system sets out to prove</h3>
+        <ul>
+          <li>Integrate Ethereum smart contracts and decentralized storage for issuing, revoking, and verifying academic credentials.</li>
+          <li>Enforce security and integrity requirements through role-based issuance and revocation.</li>
+          <li>Evaluate prototype performance and transaction behavior under controlled workloads.</li>
+          <li>Compare TrustedCert with existing blockchain credential architectures.</li>
+          <li>Assess usability, trustworthiness, and adoption feasibility for higher-education stakeholders.</li>
+        </ul>
+      </section>
+
+      <section class="paper-section">
+        <p class="paper-label">Methodology</p>
+        <h3>Agile development with design-based evaluation</h3>
+        <p>
+          The project followed an iterative development approach informed by prior blockchain
+          credentialing systems and education-policy research. The smart contract was developed with
+          Solidity and OpenZeppelin, tested with Hardhat, and deployed to Sepolia. The frontend uses
+          JavaScript and Ethers.js, while certificate files are pinned to IPFS through a secure backend
+          upload proxy.
+        </p>
+      </section>
+
+      <section class="paper-section">
+        <p class="paper-label">System Architecture</p>
+        <h3>A modular trust stack</h3>
+        <div class="paper-table">
+          <p><strong>Smart contract</strong><span>Handles institution roles, certificate issuance, revocation, verification, and pause controls.</span></p>
+          <p><strong>Storage</strong><span>Uses IPFS through Pinata to store certificate files by content identifier.</span></p>
+          <p><strong>Frontend</strong><span>Provides public verification, institution issuance, and admin controls through HTML, CSS, JavaScript, and Ethers.js.</span></p>
+          <p><strong>Backend</strong><span>Serves public configuration and protects private IPFS upload credentials.</span></p>
+          <p><strong>Wallet integration</strong><span>Uses MetaMask for account connection, role checks, and transaction signing.</span></p>
+        </div>
+      </section>
+
+      <section class="paper-section">
+        <p class="paper-label">Testing</p>
+        <h3>Validation across roles and workflows</h3>
+        <p>
+          Testing covered role management, certificate registration, duplicate prevention, revocation,
+          verification of valid and invalid records, pause behavior, and end-to-end integration flows.
+          The smart contract tests confirmed that only authorized wallets could issue or revoke
+          certificates and that revoked or non-existent certificates were handled correctly.
+        </p>
+      </section>
+
+      <section class="paper-section">
+        <p class="paper-label">Conclusion</p>
+        <h3>A practical foundation for tamper-resistant academic records</h3>
+        <p>
+          TrustedCert demonstrates how blockchain, smart contracts, and decentralized storage can work
+          together to improve credential authenticity, support cross-border verification, and reduce
+          reliance on manual institutional checks. The project is positioned as a replicable foundation
+          for future institutional pilots and production-grade credential networks.
+        </p>
+      </section>
+
+      <section class="paper-section">
+        <p class="paper-label">Selected References</p>
+        <ol>
+          <li>OpenZeppelin Contracts Documentation.</li>
+          <li>Hardhat Ethereum Development Environment.</li>
+          <li>IPFS Project Documentation.</li>
+          <li>MetaMask Documentation.</li>
+          <li>Blockcerts open standard for blockchain credentials.</li>
+          <li>Alammary et al., blockchain-based applications in education.</li>
+          <li>Chen et al., blockchain technology and applications for education.</li>
+        </ol>
+      </section>
+    </article>
+
+    <section class="research-support">
+      <article>
+        <span>01</span>
+        <strong>Credential trust problem</strong>
+        <p>Frames why certificate verification needs a public, tamper-resistant record.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <strong>Blockchain registry design</strong>
+        <p>Connects institution roles, certificate metadata, and revocation status.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <strong>Implementation model</strong>
+        <p>Explains the frontend, backend upload proxy, Ethereum contract, and IPFS layer.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      TrustedCert &copy; 2025 | Built for African Higher-Ed
+      <a href="../index.html#app">Verify a certificate</a>
+      <a href="../how-it-works.html">How it works</a>
+    </p>
+  </footer>
+</body>
+</html>

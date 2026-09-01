@@ -1,12 +1,13 @@
-// import { CONTRACT_ADDRESS, PINATA_JWT } from "../config.js";
+import { getSafeIpfsUrl, isLikelyPdfCid, safeDisplay } from "./security.js";
 
-let CONTRACT_ADDRESS, PINATA_JWT;
+const API_BASE_URL = "https://trustedcert-backend.onrender.com";
+
+let CONTRACT_ADDRESS;
 
 async function loadConfig() {
-  const res = await fetch("https://trustedcert-backend.onrender.com/config");
+  const res = await fetch(`${API_BASE_URL}/config`);
   const config = await res.json();
   CONTRACT_ADDRESS = config.contractAddress;
-  PINATA_JWT = config.pinataJWT;
 }
 
 await loadConfig();
@@ -14,6 +15,61 @@ await loadConfig();
 
 
 let provider, signer, contract, uploadedCID = "";
+
+function getIpfsUrl(cid) {
+  return getSafeIpfsUrl(cid);
+}
+
+function attachInstitutionActionHandlers() {
+  if (window.trustedCertInstitutionHandlersBound) return;
+
+  document.addEventListener("click", (event) => {
+    const copyButton = event.target.closest("[data-copy-scope='institution']");
+    if (copyButton) {
+      copyToClipboard(copyButton.dataset.copyValue || "");
+      return;
+    }
+
+    const revokeButton = event.target.closest("[data-revoke-cert-id]");
+    if (revokeButton) {
+      revokeCert(revokeButton.dataset.revokeCertId || "");
+    }
+  });
+
+  window.trustedCertInstitutionHandlersBound = true;
+}
+
+function createUploadNonce() {
+  const values = new Uint32Array(4);
+  crypto.getRandomValues(values);
+  return Array.from(values, (value) => value.toString(16).padStart(8, "0")).join("");
+}
+
+function buildUploadMessage({ address, timestamp, nonce, fileName, fileSize }) {
+  return [
+    "TrustedCert certificate upload",
+    `Wallet: ${ethers.utils.getAddress(address)}`,
+    `Timestamp: ${timestamp}`,
+    `Nonce: ${nonce}`,
+    `File: ${fileName}`,
+    `Size: ${fileSize}`,
+  ].join("\n");
+}
+
+function validateCertificateFile(file) {
+  const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
+  const maxSize = 12 * 1024 * 1024;
+
+  if (!allowedTypes.includes(file.type)) {
+    return "Only PDF, PNG, JPG, and WebP certificate files can be uploaded.";
+  }
+
+  if (file.size > maxSize) {
+    return "Certificate files must be 12MB or smaller.";
+  }
+
+  return "";
+}
 
 (async () => {
   if (!window.ethereum) {
@@ -68,7 +124,7 @@ async function loadInstitutionDetails(walletAddress) {
       document.getElementById("instDesc").innerText = institution.description || "N/A";
       document.getElementById("instWallet").innerText = institution.wallet || "N/A";
     } else {
-      document.getElementById("institutionDetailsTab").innerHTML = `
+      document.querySelector(".institution-info").innerHTML = `
         <p style="color:red">❌ You are not registered as an institution.</p>
       `;
     }
@@ -79,15 +135,27 @@ async function loadInstitutionDetails(walletAddress) {
 
 
 async function uploadToIPFS(file) {
+  const address = await signer.getAddress();
+  const timestamp = Date.now().toString();
+  const nonce = createUploadNonce();
+  const message = buildUploadMessage({
+    address,
+    timestamp,
+    nonce,
+    fileName: file.name || "certificate",
+    fileSize: file.size,
+  });
+  const signature = await signer.signMessage(message);
   const formData = new FormData();
   formData.append("file", file);
+  formData.append("address", address);
+  formData.append("timestamp", timestamp);
+  formData.append("nonce", nonce);
+  formData.append("signature", signature);
 
   try {
-    const response = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+    const response = await fetch(`${API_BASE_URL}/upload`, {
       method: "POST",
-      headers: {
-        Authorization: PINATA_JWT
-      },
       body: formData
     });
 
@@ -106,30 +174,70 @@ async function uploadToIPFS(file) {
 
 
 function enableInstitutionActions() {
-  const fileInput = document.getElementById("certificateFile");
+  attachFileInputHandler();
 
-  // const fileInput = document.getElementById("previewArea");
-
-  fileInput.addEventListener("change", async () => {
+  async function handleCertificateFileChange() {
+    const fileInput = document.getElementById("certificateFile");
     const file = fileInput.files[0];
     if (!file) return;
+    const fileError = validateCertificateFile(file);
+    if (fileError) {
+      showToast(fileError, "warning");
+      fileInput.value = "";
+      return;
+    }
 
     const fileURL = URL.createObjectURL(file);
     const previewArea = document.getElementById("previewArea");
 
     if (file.type.startsWith("image/")) {
-      previewArea.innerHTML = `<img src="${fileURL}" width="200" />`;
+      previewArea.innerHTML = `
+        <div class="upload-preview">
+          <img src="${fileURL}" alt="Selected certificate preview" />
+          <button class="button-secondary" type="button" id="replaceFileBtn">Replace file</button>
+        </div>
+      `;
     } else if (file.type === "application/pdf") {
-      previewArea.innerHTML = `<embed src="${fileURL}" width="300" height="400" type="application/pdf" />`;
+      previewArea.innerHTML = `
+        <div class="upload-preview">
+          <iframe src="${fileURL}" title="Selected certificate PDF preview" sandbox></iframe>
+          <button class="button-secondary" type="button" id="replaceFileBtn">Replace file</button>
+        </div>
+      `;
     } else {
-      previewArea.innerHTML = `<p>Preview not available for this file type.</p>`;
+      previewArea.innerHTML = `
+        <div class="empty-state">
+          <strong>Preview unavailable</strong>
+          <p>This file type can be uploaded, but it cannot be previewed here.</p>
+          <button class="button-secondary" type="button" id="replaceFileBtn">Choose another file</button>
+        </div>
+      `;
     }
+
+    document.getElementById("replaceFileBtn")?.addEventListener("click", () => {
+      uploadedCID = "";
+      document.getElementById("registerBtn").disabled = true;
+      resetUploadArea();
+    });
 
     // document.getElementById("cidDisplay").innerText = "Hang on, uploading to IPFS...";
     document.getElementById("cidDisplay").style.display = "flex"; // Hide
     await uploadToIPFS(file);
     document.getElementById("cidDisplay").style.display = "none"; // Hide
-  });
+  }
+
+  function attachFileInputHandler() {
+    const fileInput = document.getElementById("certificateFile");
+    fileInput?.addEventListener("change", handleCertificateFileChange);
+  }
+
+  function resetUploadArea() {
+    document.getElementById("previewArea").innerHTML = `
+      <input type="file" id="certificateFile" placeholder="Choose a file" />
+      <p class="upload-hint">Upload a certificate image or PDF for preview and IPFS storage.</p>
+    `;
+    attachFileInputHandler();
+  }
 
   // Register certificate 
   document.getElementById("registerBtn").onclick = async () => {
@@ -147,7 +255,7 @@ function enableInstitutionActions() {
   document.getElementById("confirmCertName").innerText = name;
   document.getElementById("confirmCertTitle").innerText = title;
   document.getElementById("confirmCertExternalId").innerText = externalId;
-  document.getElementById("confirmCertPreview").innerHTML = previewArea.innerHTML;
+  document.getElementById("confirmCertPreview").innerHTML = previewArea.querySelector("img, iframe")?.outerHTML || previewArea.innerHTML;
   document.getElementById("confirmCertModal").style.display = "block";
 
   // Confirm
@@ -167,12 +275,14 @@ function enableInstitutionActions() {
       showToast("✅ Certificate registered successfully!", "success");
 
       // Clear inputs and reload
+      const registeredCID = uploadedCID;
       document.getElementById("recipientName").value = "";
       document.getElementById("title").value = "";
       document.getElementById("externalId").value = "";
-      previewArea.innerHTML = "";
+      uploadedCID = "";
+      resetUploadArea();
 
-      showRegisteredCertificateCard(name, title, uploadedCID, latestId);
+      showRegisteredCertificateCard(name, title, registeredCID, latestId);
       loadStats();
       loadCertificates();
 
@@ -195,21 +305,25 @@ function enableInstitutionActions() {
   // ✅ Function to show the newly registered certificate
   function showRegisteredCertificateCard(name, title, cid, id) {
     const certCard = document.getElementById("registeredCert");
+    const safeId = safeDisplay(id);
     certCard.innerHTML = ""; // Clear previous card if it exists
 
     certCard.className = "result-wrapper"; // or use your custom success class
     certCard.innerHTML = `
       <div class="cert-card">
           <h3>✅Certificate Registered</h3>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Title:</strong> ${title}</p>
-          <p><strong>ID:</strong> ${id}
-            <button class="copy-btn" onclick="copyToClipboard('${id}')">Copy</button>
+          <p><strong>Name:</strong> ${safeDisplay(name)}</p>
+          <p><strong>Title:</strong> ${safeDisplay(title)}</p>
+          <p><strong>ID:</strong> ${safeId}
+            <button class="copy-btn" type="button" data-copy-scope="institution" data-copy-value="${safeId}">Copy</button>
           </p>
+          <div class="cert-actions">
+            <a class="button-secondary detail-link" href="certificate.html?id=${encodeURIComponent(id)}">View trust details</a>
+          </div>
           
       </div>
 
-      <div class="preview-container"><img src="https://ipfs.io/ipfs/${cid}" class="file-preview" alt="Certificate Preview"/></div>
+      <div class="preview-container">${getIpfsUrl(cid) ? `<img src="${getIpfsUrl(cid)}" class="file-preview" alt="Certificate Preview"/>` : `<p class="error">Preview unavailable</p>`}</div>
   `;
   }
 
@@ -236,6 +350,7 @@ async function loadCertificates() {
   for (const id of certIds.slice().reverse()) {
     const cert = await contract.verifyCertificate(id);
     const issueDate = new Date(Number(cert.issuedAt) * 1000).toLocaleDateString();
+    const safeId = safeDisplay(id);
 
     // Create a list item for each certificate
     const certCard = document.createElement("li");
@@ -244,11 +359,11 @@ async function loadCertificates() {
     // File preview logic
     let filePreview = "";
     if (cert.cid) {
-      const fileUrl = `https://gateway.pinata.cloud/ipfs/${cert.cid}` ? `https://ipfs.io/ipfs/${cert.cid}` : ""; // or try cloudflare-ipfs
+      const fileUrl = getIpfsUrl(cert.cid);
 
-      if (cert.cid.endsWith(".pdf")) {
+      if (isLikelyPdfCid(cert.cid)) {
         filePreview = `
-      <embed src="${fileUrl}" width="300" height="400" type="application/pdf" />
+      <iframe class="certificate-frame" src="${fileUrl}" title="Certificate PDF preview" loading="lazy" sandbox referrerpolicy="no-referrer"></iframe>
       <p><a href="${fileUrl}" target="_blank" rel="noopener noreferrer">Open PDF in new tab</a></p>
     `;
       } else {
@@ -260,17 +375,20 @@ async function loadCertificates() {
     certCard.innerHTML = `
 
       <div class="cert-details">
-        <p><strong>ID:</strong> ${id}
+        <p><strong>ID:</strong> ${safeId}
         </span> 
-          <button class="copy-btn" onclick="copyToClipboard('${id}')">
-            copy
+          <button class="copy-btn" type="button" data-copy-scope="institution" data-copy-value="${safeId}">
+            Copy
           </button>
         </p>
-        <p><strong>Name:</strong> ${cert.recipientName}</p>
-        <p><strong>Title:</strong> ${cert.title}</p>
+        <p><strong>Name:</strong> ${safeDisplay(cert.recipientName)}</p>
+        <p><strong>Title:</strong> ${safeDisplay(cert.title)}</p>
         <p><strong>Issued:</strong> ${issueDate}</p>
         <p><strong>Status:</strong> ${cert.isRevoked ? "❌ Revoked" : "✅ Active"}</p>
-        <button class="button-action revokeCerts-button" onclick="revokeCert('${id}')">Revoke</button>
+        <div class="cert-actions">
+          <a class="button-secondary detail-link" href="certificate.html?id=${encodeURIComponent(id)}">View trust details</a>
+          <button class="button-action revokeCerts-button" type="button" data-revoke-cert-id="${safeId}">Revoke</button>
+        </div>
       </div>
       <div class="file-preview-container">${filePreview}</div>
       
@@ -279,6 +397,14 @@ async function loadCertificates() {
     certContainer.appendChild(certCard);
   }
 
+  if (!certContainer.children.length) {
+    certContainer.innerHTML = `
+      <li class="empty-state">
+        <strong>No certificates issued yet</strong>
+        <p>Registered credentials will appear here after your institution anchors its first certificate.</p>
+      </li>
+    `;
+  }
 
 
   // Append the list container to the main certificateList div
@@ -314,8 +440,7 @@ async function loadStats() {
 }
 
 
-// Revocation globally exposed
-window.revokeCert = async function (id) {
+async function revokeCert(id) {
   try {
     const cert = await contract.verifyCertificate(id);
 
@@ -324,7 +449,10 @@ window.revokeCert = async function (id) {
     document.getElementById("confirmRevokeName").innerText = cert.recipientName;
     document.getElementById("confirmRevokeTitle").innerText = cert.title;
     document.getElementById("confirmRevokeExternalId").innerText = cert.externalId;
-    document.getElementById("confirmRevokePreview").innerHTML = `<img src="https://ipfs.io/ipfs/${cert.cid}" width="200" />`;
+    const revokeFileUrl = getIpfsUrl(cert.cid);
+    document.getElementById("confirmRevokePreview").innerHTML = revokeFileUrl
+      ? `<img src="${revokeFileUrl}" width="200" alt="Certificate preview" />`
+      : `<p class="error">Preview unavailable</p>`;
     document.getElementById("confirmRevokeCertModal").style.display = "block";
 
     // Confirm revocation
@@ -355,7 +483,11 @@ window.revokeCert = async function (id) {
     console.error("Error loading certificate for revocation:", err);
     showToast("❌ Could not load certificate info.", "error");
   }
-};
+}
+
+// Keep the legacy global available for already-open pages and console use.
+window.revokeCert = revokeCert;
+attachInstitutionActionHandlers();
 
 
 

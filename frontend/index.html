@@ -1,112 +1,192 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>TrustedCert</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
+  <meta
+    name="description"
+    content="TrustedCert helps African higher-education institutions issue and verify tamper-resistant certificates on-chain."
+  />
+  <title>TrustedCert | Certificate Verification</title>
+  <script
+    src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"
+    integrity="sha384-Htz1SE4Sl5aitpvFgr2j0sfsGUIuSXI6t8hEyrlQ93zflEF3a29bH2AvkUROUw7J"
+    crossorigin="anonymous"
+  ></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css"
+    integrity="sha384-GSJP6bR4yv1SbLGhL+ntxb4LDi6RC5j8eM8OAh5lwPYdvj9cflIWJiFZdAFr2gyP"
+    crossorigin="anonymous"
+  />
+  <link rel="stylesheet" href="styles.css?v=20260901-mobile-nav">
 </head>
 
-<div id="policyModal" class="confirmModal">
-  <div class="modal-content">
-    <span class="close-button" id="closeModal">&times;</span>
-    <div class="modal-body">
-      <iframe 
-        src="https://docs.google.com/document/d/1xogrFG0n0FPzlcDsvSz-Xm2t_ZA6mtWXPU4RQaq8qyw/preview" 
-        width="100%" height="100%" frameborder="0" allowfullscreen>
-      </iframe>
-    </div>
-    <div class="modal-footer">
-      <button id="acceptPolicyBtn" class="button-action">Accept</button>
-    </div>
-  </div>
-</div>
-
 <body>
-
-
-
-
-<!-- <div id="entirePage"> -->
-    <!-- Shared Header -->
-    <header>
-      <a href="https://trustedcert.onrender.com/" class="branding-link">
-  <div class="branding">
-    <img src="images/trusted_cert_logo.png" alt="Logo" class="logo" />
-    <div class="branding-text">
-      <h1>TrustedCert</h1>
-      <p>Decentralized Certificate Issuance & Verification</p>
+  <div
+    id="policyModal"
+    class="confirmModal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="policyModalTitle"
+  >
+    <div class="modal-content policy-modal">
+      <div class="policy-modal-header">
+        <div>
+          <p class="policy-kicker">TrustedCert policy</p>
+          <h2 id="policyModalTitle">End-User License Agreement & Privacy Policy</h2>
+        </div>
+        <button class="close-button" id="closeModal" type="button" aria-label="Close policy">&times;</button>
+      </div>
+      <div class="modal-body">
+        <iframe
+          class="policy-frame"
+          src="https://docs.google.com/document/d/1xogrFG0n0FPzlcDsvSz-Xm2t_ZA6mtWXPU4RQaq8qyw/preview"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          sandbox="allow-scripts allow-same-origin allow-popups"
+          allowfullscreen
+          title="TrustedCert policy document"
+        ></iframe>
+      </div>
     </div>
   </div>
-</a>
 
+  <header class="site-header">
+    <a href="https://trustedcert.onrender.com/" class="branding-link" aria-label="TrustedCert home">
+      <div class="branding">
+        <img src="images/trusted_cert_logo.png" alt="TrustedCert logo" class="logo" />
+        <div class="branding-text">
+          <h1>TrustedCert</h1>
+          <p>Decentralized credential trust layer</p>
+        </div>
+      </div>
+    </a>
+
+    <button
+      class="menu-toggle"
+      id="mobileMenuToggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobileHeaderPanel"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="header-panel" id="mobileHeaderPanel">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#app">Verify</a>
+        <a href="how-it-works.html">How it works</a>
+        <a href="research/">Research</a>
+      </nav>
 
       <div class="wallet-container">
-          <button id="connectBtn">
-              <p id="walletStatus">🔴 Connect Wallet</p>
-          </button>
+        <span id="networkBadge" class="network-badge">Sepolia ready</span>
+        <button id="switchNetworkBtn" class="network-switch" type="button" hidden>Switch network</button>
+        <button id="connectBtn" type="button">
+          <span id="walletStatus">Connect wallet</span>
+        </button>
       </div>
+    </div>
   </header>
-  
-    <!-- Loading Overlay -->
+
+  <main class="page-shell">
+    <section class="hero-section" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <span class="eyebrow">On-chain certificate verification</span>
+        <h2 id="hero-title">Verify credentials with institutional confidence.</h2>
+        <p>
+          TrustedCert gives schools, registrars, employers, and graduates a clean way
+          to issue, manage, and validate certificates against blockchain records.
+        </p>
+      </div>
+
+      <div class="proof-panel" aria-label="TrustedCert assurance layers">
+        <div class="stack-visual" aria-hidden="true">
+          <span class="stack-base"></span>
+          <span class="stack-card stack-card-one"></span>
+          <span class="stack-card stack-card-two"></span>
+          <span class="stack-card stack-card-three"></span>
+        </div>
+        <div class="proof-heading">
+          <span>Credential network</span>
+          <strong>Live trust table</strong>
+        </div>
+        <div class="proof-row">
+          <span>Verification</span>
+          <strong>Public certificate ID</strong>
+        </div>
+        <div class="proof-row">
+          <span>Storage</span>
+          <strong>IPFS preview records</strong>
+        </div>
+        <div class="proof-row">
+          <span>Issuer access</span>
+          <strong>Role-based wallets</strong>
+        </div>
+        <div class="proof-row">
+          <span>Network</span>
+          <strong>Sepolia smart contract</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="grant-strip" aria-label="TrustedCert pathways">
+      <article class="grant-card">
+        <h3>Verify records for <mark class="mark-gold">employers</mark></h3>
+        <p>Confirm certificate authenticity without contacting the issuing office.</p>
+        <a href="#app" class="grant-pill grant-pill-gold">Verify now</a>
+      </article>
+      <article class="grant-card">
+        <h3>Issue records for <mark class="mark-green">academics</mark></h3>
+        <p>Give registrars a wallet-based workspace for anchored certificate issuance.</p>
+        <button class="grant-pill grant-pill-green" id="grantConnectBtn" type="button">Connect</button>
+      </article>
+      <article class="grant-card">
+        <h3>Use <mark class="mark-blue">committed trust</mark> on-chain</h3>
+        <p>Keep issuer roles, certificate status, and document previews in one flow.</p>
+        <a href="#app" class="grant-pill grant-pill-blue">Explore</a>
+      </article>
+    </section>
+
     <div id="loadingOverlayFirst" style="display: none">
       <div id="loadingIndicator">
-        <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
-        <!-- <p>Verifying Role...</p> -->
+        <span class="loader-dot"></span>
+        <p>Preparing verification...</p>
       </div>
     </div>
-  
-  <!-- Loading Overlay -->
-  <div id="loadingOverlayRole" style="display: none">
-    <div id="loadingIndicator">
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
-      <p>Verifying Role...</p>
+
+    <div id="loadingOverlayRole" style="display: none">
+      <div id="loadingIndicator">
+        <span class="loader-dot"></span>
+        <p>Checking wallet role...</p>
+      </div>
     </div>
-  </div>
 
-  <div id="app_header">
-     <!-- DYNAMIC CONTENT AREA That grows -->
-  </div>
-  <div id="app">
-    <!-- DYNAMIC CONTENT AREA That grows -->
- </div>
+    <div id="app_header"></div>
+    <section id="app" aria-live="polite"></section>
+  </main>
 
+  <footer>
+    <p>
+      TrustedCert &copy; 2025 | Built for African Higher-Ed
+      <a href="#" id="openPolicyModal">End-User License Agreement & Privacy Policy</a>
+      <a href="research/">Research paper</a>
+    </p>
+  </footer>
 
-
-<!-- </div> -->
-
-<footer>
-  <p>
-    TrustedCert &copy; 2025 | Built for African Higher-Ed 
-    <br /> 
-    <a href="#" id="openPolicyModal">End-User License Agreement & Privacy Policy</a>
-  </p>
-</footer>
-
-
-
-  <!-- Scripts -->
-  <script type="module" src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <!-- Load config before main logic -->
-    <!-- <script type="module" src="config.js"></script> -->
-
-
-    <script defer type="module" src="js/index.js"></script>
-    <!-- Always load verify.js on page load -->
-     <!-- <script defer type="module" src="js/verify.js"></script> -->
-
-     
-     
-
+  <script
+    src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"
+    integrity="sha384-HV48j9xMNfX80v1dhiML90VeD4a38xrehnBK+dNSSe8P4fija/zP36u52q7TpB6O"
+    crossorigin="anonymous"
+  ></script>
+  <script defer type="module" src="js/index.js?v=20260901-mobile-nav"></script>
 </body>
-</html
+</html>

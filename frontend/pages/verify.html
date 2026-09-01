@@ -1,27 +1,57 @@
 <!-- pages/verify.html -->
 <div class="dashboard-header">
-  <h3>Hello!</h3>
-  <p>Easily verify certificates</p>
+  <span class="eyebrow">Public verifier</span>
+  <h3>Verify Certificate</h3>
+  <p>Enter a certificate hash to confirm the recipient, issuer, issuance date, and revocation status.</p>
+</div>
+
+<div class="tab-content active verifier-panel">
+  <div class="section-heading">
+    <h2>Certificate lookup</h2>
+    <p>Use the on-chain certificate ID issued by a registered institution.</p>
   </div>
 
-<div class="tab-content active">
-  <h2>Verify Certificate</h2>
-<div>
-  <input  id="certId" placeholder="Enter Certificate ID (certId hash)" class="input-field" />
-  <button id="verifyBtn" class="button-action">Verify</button>
-  <button id="copySampleCertId" class="copy-btn" style="display: flex;">Copy Sample Cert ID</button>
-</div>
-
-
-<!-- Loading Overlay -->
-<div id="loadingOverlayVerify" style="display: none">
-  <div id="loadingIndicator">
-    <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
-    <p>Verifying Cerificate...</p>
+  <div class="input-row">
+    <input id="certId" placeholder="Enter certificate ID hash" class="input-field" autocomplete="off" />
+    <button id="verifyBtn" class="button-action">Verify</button>
   </div>
-</div>
 
-<!-- Result Section -->
-<div id="result" ></div>
-</div>
+  <button id="copySampleCertId" class="copy-btn">Use sample certificate ID</button>
 
+  <div class="trust-workflow" aria-label="Verification checklist">
+    <div class="trust-step" data-step="input">
+      <span>01</span>
+      <strong>Certificate ID</strong>
+      <p>Waiting for a certificate hash.</p>
+    </div>
+    <div class="trust-step" data-step="record">
+      <span>02</span>
+      <strong>Blockchain record</strong>
+      <p>Find the registry entry on Sepolia.</p>
+    </div>
+    <div class="trust-step" data-step="issuer">
+      <span>03</span>
+      <strong>Issuer match</strong>
+      <p>Confirm the issuing wallet and institution.</p>
+    </div>
+    <div class="trust-step" data-step="document">
+      <span>04</span>
+      <strong>Document preview</strong>
+      <p>Load the attached IPFS certificate.</p>
+    </div>
+  </div>
+
+  <div class="empty-state" id="verifyEmptyState">
+    <strong>Ready to verify</strong>
+    <p>Paste a certificate ID to check authenticity, revocation status, issuer details, and the attached certificate preview.</p>
+  </div>
+
+  <div id="loadingOverlayVerify" style="display: none">
+    <div id="loadingIndicator">
+      <span class="loader-dot"></span>
+      <p>Verifying certificate...</p>
+    </div>
+  </div>
+
+  <div id="result"></div>
+</div>

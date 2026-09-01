@@ -1,26 +1,43 @@
 {
   "name": "trustedcert",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "hardhat test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "chai": "^4.5.0",
-    "hardhat": "^2.22.19"
+    "@nomicfoundation/hardhat-ethers": "^4.0.15",
+    "@nomicfoundation/hardhat-ethers-chai-matchers": "^3.0.11",
+    "@nomicfoundation/hardhat-mocha": "^3.1.0",
+    "@nomicfoundation/hardhat-network-helpers": "^3.0.11",
+    "chai": "^5.3.3",
+    "ethers": "^6.17.0",
+    "hardhat": "^3.15.0",
+    "mocha": "^11.8.0",
+    "solc": "^0.8.28"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.9.3",
+    "@openzeppelin/contracts": "^4.9.6",
     "dotenv": "^16.4.7"
+  },
+  "overrides": {
+    "adm-zip": "0.6.0",
+    "bn.js": "4.12.3",
+    "cookie": "0.7.2",
+    "diff": "8.0.3",
+    "lodash": "4.18.1",
+    "serialize-javascript": "7.1.1",
+    "tmp": "0.2.7",
+    "undici": "8.10.1",
+    "uuid": "11.1.1",
+    "ws": "8.21.3"
   }
-
-  
 }

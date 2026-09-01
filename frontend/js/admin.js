@@ -1,12 +1,13 @@
-// import { CONTRACT_ADDRESS } from "../config.js";
+import { getSafeIpfsUrl, safeDisplay } from "./security.js";
 
-let CONTRACT_ADDRESS, PINATA_JWT;
+const API_BASE_URL = "https://trustedcert-backend.onrender.com";
+
+let CONTRACT_ADDRESS;
 
 async function loadConfig() {
-  const res = await fetch("https://trustedcert-backend.onrender.com/config");
+  const res = await fetch(`${API_BASE_URL}/config`);
   const config = await res.json();
   CONTRACT_ADDRESS = config.contractAddress;
-  PINATA_JWT = config.pinataJWT;
 }
 
 await loadConfig();
@@ -14,6 +15,23 @@ await loadConfig();
 
 
 let provider, signer, contract;
+
+function getIpfsUrl(cid) {
+  return getSafeIpfsUrl(cid);
+}
+
+function attachAdminActionHandlers() {
+  if (window.trustedCertAdminHandlersBound) return;
+
+  document.addEventListener("click", (event) => {
+    const copyButton = event.target.closest("[data-copy-scope='admin']");
+    if (copyButton) {
+      copyToClipboard(copyButton.dataset.copyValue || "");
+    }
+  });
+
+  window.trustedCertAdminHandlersBound = true;
+}
 
 (async () => {
   if (!window.ethereum) {
@@ -39,8 +57,13 @@ let provider, signer, contract;
     loadStats();
 
   } else {
-    document.getElementById("adminArea").innerHTML = `
-      <p style="color:red">❌ You do not have admin access.</p>
+    document.getElementById("app").innerHTML = `
+      <div class="tab-content active">
+        <div class="section-heading">
+          <h2>Admin access required</h2>
+          <p class="error">Your connected wallet does not have administrator access.</p>
+        </div>
+      </div>
     `;
   }
 })();
@@ -86,6 +109,8 @@ const uniqueInstitutions = institutions.filter(
 
 
         const issueDate = new Date(Number(cert.issuedAt) * 1000).toLocaleDateString();
+        const certId = reversedCertIds[j];
+        const safeCertId = safeDisplay(certId);
 
 
         // Find the issuing institution name
@@ -98,23 +123,35 @@ const uniqueInstitutions = institutions.filter(
 
         certCard.innerHTML = `
                 <div class="cert-details">
-                    <p><strong>Recipient:</strong> ${cert.recipientName}</p>
-                    <p><strong>Title:</strong> ${cert.title}</p>
-                    <p><strong>Issued By:</strong> ${issuerName}</p>
+                    <p><strong>Recipient:</strong> ${safeDisplay(cert.recipientName)}</p>
+                    <p><strong>Title:</strong> ${safeDisplay(cert.title)}</p>
+                    <p><strong>Issued By:</strong> ${safeDisplay(issuerName)}</p>
                     <p><strong>Issue Date:</strong> ${issueDate}</p>
                     <p><strong>Status:</strong> ${cert.isRevoked ? "❌ Revoked" : "✅ Active"}</p>
-                    <p><strong>ID:</strong> ${reversedCertIds[j]} 
-            <button class="copy-btn" onclick="copyToClipboard('${reversedCertIds[j]}')">Copy</button>
+                    <p><strong>ID:</strong> ${safeCertId} 
+            <button class="copy-btn" type="button" data-copy-scope="admin" data-copy-value="${safeCertId}">Copy</button>
         </p>
+                    <div class="cert-actions">
+                        <a class="button-secondary detail-link" href="certificate.html?id=${encodeURIComponent(certId)}">View trust details</a>
+                    </div>
                 </div>
                 <div class="file-preview-container">
-                    ${cert.cid ? `<img class="certificate-image" src="https://ipfs.io/ipfs/${cert.cid}" alt="Certificate Preview"/>` : ""}
+                    ${getIpfsUrl(cert.cid) ? `<img class="certificate-image" src="${getIpfsUrl(cert.cid)}" alt="Certificate Preview"/>` : ""}
                 </div>
               `;
 
         // Append certificate card to container
         certContainer.appendChild(certCard);
       }
+    }
+
+    if (!certContainer.children.length) {
+      certContainer.innerHTML = `
+        <li class="empty-state">
+          <strong>No certificates found</strong>
+          <p>Registered certificates will appear here once institutions begin issuing credentials.</p>
+        </li>
+      `;
     }
 
     // Append certificate list to page
@@ -274,13 +311,18 @@ const uniqueInstitutions = institutions.filter(
 
     const list = document.getElementById("institutionList");
 
-    list.innerHTML = uniqueInstitutions.map(inst => `
+    list.innerHTML = uniqueInstitutions.length ? uniqueInstitutions.map(inst => `
     <li class="institution-card">
-      <h4>${inst.name}</h4>
-      <p><em>${inst.description}</em></p>
-      <p>${inst.wallet}</p>
+      <h4>${safeDisplay(inst.name)}</h4>
+      <p><em>${safeDisplay(inst.description)}</em></p>
+      <p>${safeDisplay(inst.wallet)}</p>
     </li>
-  `).join("");
+  `).join("") : `
+    <li class="empty-state">
+      <strong>No institutions found</strong>
+      <p>Approved institution wallets will appear here after registration.</p>
+    </li>
+  `;
 
     document.getElementById("searchInstitutions").onkeyup = debounce(() => {
       filterList("institutionList", document.getElementById("searchInstitutions").value);
@@ -373,3 +415,5 @@ document.querySelectorAll(".tab-button").forEach(button => {
     document.getElementById(this.dataset.tab).classList.add("active");
   });
 });
+
+attachAdminActionHandlers();

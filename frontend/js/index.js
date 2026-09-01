@@ -1,12 +1,18 @@
 
 
-let CONTRACT_ADDRESS, PINATA_JWT;
+const API_BASE_URL = "https://trustedcert-backend.onrender.com";
+const SEPOLIA_CHAIN_ID = 11155111;
+const SEPOLIA_CHAIN_ID_HEX = "0xaa36a7";
+const APP_VERSION = "20260901-mobile-nav";
+
+let CONTRACT_ADDRESS;
+let activeRoleScript;
+let pageLoadNonce = 0;
 
 async function loadConfig() {
-  const res = await fetch("https://trustedcert-backend.onrender.com/config");
+  const res = await fetch(`${API_BASE_URL}/config`);
   const config = await res.json();
   CONTRACT_ADDRESS = config.contractAddress;
-  PINATA_JWT = config.pinataJWT;
 }
 
 
@@ -14,14 +20,119 @@ async function loadConfig() {
 // Global setup
 let provider, signer, contract;
 
+function setNetworkBadge(status, text) {
+  const networkBadge = document.getElementById("networkBadge");
+  if (!networkBadge) return;
+
+  networkBadge.dataset.status = status;
+  networkBadge.textContent = text;
+}
+
+function setSwitchNetworkVisible(isVisible) {
+  const switchNetworkBtn = document.getElementById("switchNetworkBtn");
+  if (switchNetworkBtn) {
+    switchNetworkBtn.hidden = !isVisible;
+  }
+}
+
+async function switchToSepolia() {
+  if (!window.ethereum) return false;
+
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: SEPOLIA_CHAIN_ID_HEX }]
+    });
+    setNetworkBadge("ready", "Sepolia");
+    setSwitchNetworkVisible(false);
+    return true;
+  } catch (error) {
+    console.error("Network switch error:", error);
+    setNetworkBadge("warning", "Wrong network");
+    setSwitchNetworkVisible(true);
+    showToast("Please switch to Sepolia to use wallet dashboards.", "warning");
+    return false;
+  }
+}
+
+async function ensureSepoliaNetwork() {
+  if (!provider) return false;
+
+  const network = await provider.getNetwork();
+  if (network.chainId === SEPOLIA_CHAIN_ID) {
+    setNetworkBadge("ready", "Sepolia");
+    setSwitchNetworkVisible(false);
+    return true;
+  }
+
+  setNetworkBadge("warning", "Wrong network");
+  setSwitchNetworkVisible(true);
+  return switchToSepolia();
+}
+
 window.onload = async () => {
   document.getElementById("loadingOverlayFirst").style.display = "flex"; // Show loading animation
   await loadConfig();
   document.getElementById("loadingOverlayFirst").style.display = "none"; // Hide loading animation
 
-  loadPage("verify"); // Show verify page by default
+  loadPage("verify", { showLanding: true }); // Show verify page by default
   const connectBtn = document.getElementById("connectBtn");
+  const grantConnectBtn = document.getElementById("grantConnectBtn");
+  const switchNetworkBtn = document.getElementById("switchNetworkBtn");
+  const siteHeader = document.querySelector(".site-header");
+  const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+  const mobileHeaderPanel = document.getElementById("mobileHeaderPanel");
   const walletDisplay = document.getElementById("walletAddress");
+
+  function setMobileMenuOpen(isOpen) {
+    if (!siteHeader || !mobileMenuToggle || !mobileHeaderPanel) return;
+
+    siteHeader.classList.toggle("is-menu-open", isOpen);
+    mobileHeaderPanel.classList.toggle("is-open", isOpen);
+    mobileMenuToggle.setAttribute("aria-expanded", String(isOpen));
+    mobileMenuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+  }
+
+  mobileMenuToggle?.addEventListener("click", () => {
+    setMobileMenuOpen(!siteHeader?.classList.contains("is-menu-open"));
+  });
+
+  mobileHeaderPanel?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setMobileMenuOpen(false));
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!siteHeader?.classList.contains("is-menu-open")) return;
+    if (siteHeader.contains(event.target)) return;
+    setMobileMenuOpen(false);
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setMobileMenuOpen(false);
+    }
+  });
+
+  grantConnectBtn?.addEventListener("click", () => {
+    connectBtn?.click();
+  });
+
+  switchNetworkBtn?.addEventListener("click", async () => {
+    const switched = await switchToSepolia();
+    if (switched && window.ethereum) {
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      signer = provider.getSigner();
+    }
+  });
+
+  window.ethereum?.on?.("chainChanged", async () => {
+    if (!provider) return;
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+    const network = await provider.getNetwork();
+    const isSepolia = network.chainId === SEPOLIA_CHAIN_ID;
+    setNetworkBadge(isSepolia ? "ready" : "warning", isSepolia ? "Sepolia" : "Wrong network");
+    setSwitchNetworkVisible(!isSepolia);
+  });
 
 
   connectBtn.onclick = async () => {
@@ -45,6 +156,10 @@ window.onload = async () => {
 
     provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
+    const isSepolia = await ensureSepoliaNetwork();
+    if (!isSepolia) return;
+
+    provider = new ethers.providers.Web3Provider(window.ethereum);
     signer = provider.getSigner();
     const address = await signer.getAddress();
     // ✅ Truncate and update button text
@@ -58,6 +173,7 @@ window.onload = async () => {
     console.log("✅ Using contract address:", CONTRACT_ADDRESS);
 
     showToast("✅ Wallet connected!", "success");
+    setMobileMenuOpen(false);
 
 
 
@@ -105,14 +221,14 @@ async function determineUserRole(address) {
 
 
     if (isAdmin) {
-      loadPage("admin");
+      loadPage("admin", { showLanding: false });
       showToast("✅ Admin role detected. Loading Admin page.", "success");
     } else if (isInstitution) {
-      loadPage("institution");
+      loadPage("institution", { showLanding: false });
       showToast("✅ Institution role detected. Loading Institution page.", "success");
     } else {
       showToast("No role assigned. Loading Verify page.", "warning");
-      loadPage("verify");
+      loadPage("verify", { showLanding: false });
     }
   } catch (error) {
     console.error("Role Determination Error:", error);
@@ -120,30 +236,41 @@ async function determineUserRole(address) {
 
     // Hide overlay and fallback to verify page
     document.getElementById("loadingOverlayRole").style.display = "none";
-    loadPage("verify");
+    loadPage("verify", { showLanding: false });
   }
 }
 
 
 // ✅ Load the respective page
-async function loadPage(role) {
+async function loadPage(role, options = {}) {
+  const { showLanding = true } = options;
+
   try {
-    const res = await fetch(`pages/${role}.html`);
+    pageLoadNonce += 1;
+    const res = await fetch(`pages/${role}.html?v=${APP_VERSION}-${pageLoadNonce}`);
     const html = await res.text();
     document.getElementById("app").innerHTML = html;
+    document.body.classList.toggle("dashboard-active", !showLanding);
 
     console.log(`✅ Loaded ${role}.html into #app`);
 
     // Dynamically load the role's script
+    if (activeRoleScript) {
+      activeRoleScript.remove();
+      activeRoleScript = null;
+    }
+
     const script = document.createElement("script");
-    script.src = `js/${role}.js`;
+    script.src = `js/${role}.js?v=${APP_VERSION}-${pageLoadNonce}`;
     script.type = "module";
+    script.dataset.roleScript = role;
 
 
     script.onload = () => console.log(`✅ ${role}.js loaded`);
     script.onerror = () => console.error(`❌ Failed to load js/${role}.js`);
     
     document.body.appendChild(script);
+    activeRoleScript = script;
 
   } catch (error) {
     console.error(`Error loading ${role} page:`, error);
@@ -151,25 +278,37 @@ async function loadPage(role) {
   }
 }
 
-// ✅ Modal for End-User License Agreement & Privacy Policy
-document.getElementById("openPolicyModal").addEventListener("click", function(e) {
+// Modal for End-User License Agreement & Privacy Policy
+const policyModal = document.getElementById("policyModal");
+const openPolicyModal = document.getElementById("openPolicyModal");
+const closePolicyModal = document.getElementById("closeModal");
+
+function setPolicyModalOpen(isOpen) {
+  if (!policyModal) return;
+
+  policyModal.classList.toggle("is-open", isOpen);
+  policyModal.setAttribute("aria-hidden", String(!isOpen));
+  document.body.classList.toggle("modal-open", isOpen);
+}
+
+openPolicyModal?.addEventListener("click", function(e) {
   e.preventDefault();
-  document.getElementById("policyModal").style.display = "block";
+  setPolicyModalOpen(true);
 });
 
-document.getElementById("closeModal").addEventListener("click", function() {
-  document.getElementById("policyModal").style.display = "none";
+closePolicyModal?.addEventListener("click", function() {
+  setPolicyModalOpen(false);
 });
 
-document.getElementById("acceptPolicyBtn").addEventListener("click", function() {
-  showToast("✅ Policy Accepted. Thank you!", "success");
-  document.getElementById("policyModal").style.display = "none";
+window.addEventListener("keydown", function(event) {
+  if (event.key === "Escape") {
+    setPolicyModalOpen(false);
+  }
 });
 
 window.addEventListener("click", function(event) {
-  const modal = document.getElementById("policyModal");
-  if (event.target === modal) {
-    modal.style.display = "none";
+  if (event.target === policyModal) {
+    setPolicyModalOpen(false);
   }
 });
 
@@ -207,7 +346,9 @@ window.showToast = function(message, type) {
       duration: 3000,
       gravity: "top",
       position: "right",
-      backgroundColor: bgColor,
+      style: {
+        background: bgColor,
+      },
     }).showToast();
   };
 
@@ -257,4 +398,3 @@ window.filterList = function (listId, searchText) {
       showToast("❌ No certificates found matching the search!", "warning");
     }
   }
-  

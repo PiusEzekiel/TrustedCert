@@ -1,9 +1,9 @@
-const {
-  time,
-  loadFixture,
-} = require("@nomicfoundation/hardhat-toolbox/network-helpers");
-const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
-const { expect } = require("chai");
+import { anyValue } from "@nomicfoundation/hardhat-ethers-chai-matchers/withArgs";
+import { expect } from "chai";
+import { network } from "hardhat";
+
+const { ethers, networkHelpers } = await network.create();
+const { time, loadFixture } = networkHelpers;
 
 describe("Lock", function () {
   // We define a fixture to reuse the same setup in every test.
@@ -90,7 +90,7 @@ describe("Lock", function () {
         // Transactions are sent using the first signer by default
         await time.increaseTo(unlockTime);
 
-        await expect(lock.withdraw()).not.to.be.reverted;
+        await expect(lock.withdraw()).to.not.revert(ethers);
       });
     });
 
@@ -117,6 +117,7 @@ describe("Lock", function () {
         await time.increaseTo(unlockTime);
 
         await expect(lock.withdraw()).to.changeEtherBalances(
+          ethers,
           [owner, lock],
           [lockedAmount, -lockedAmount]
         );

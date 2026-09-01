@@ -1,90 +1,82 @@
 <!-- pages/institution.html -->
 <div class="dashboard-header">
-<h3>Institution Dashboard</h3>
-<p>Welcome, Registrar! Register and Manage certificates.</p>
+  <span class="eyebrow">Registrar workspace</span>
+  <h3>Institution Dashboard</h3>
+  <p>Register certificates, review issued records, and revoke credentials when required.</p>
 </div>
 
-<!-- Institution Information -->
- <div class="institution-info">
-    <p><strong>Institution:</strong> <span id="instName">Loading...</span></p>
-    <p><strong>Description:</strong> <span id="instDesc">Loading...</span></p>
-    <p><strong>Wallet Address:</strong> <span id="instWallet">Loading...</span></p>
-  </div>
+<div class="institution-info">
+  <p><strong>Institution</strong> <span id="instName">Loading...</span></p>
+  <p><strong>Description</strong> <span id="instDesc">Loading...</span></p>
+  <p><strong>Wallet</strong> <span id="instWallet">Loading...</span></p>
+</div>
 
+<div class="tabs">
+  <button class="tab-button active" data-tab="registerTab">Register Certificate</button>
+  <button class="tab-button" data-tab="manageTab">Manage Certificates</button>
+</div>
 
-
-  <!-- TAB NAVIGATION -->
-  <div class="tabs">
-    <button class="tab-button active" data-tab="registerTab">📜 Register Certificate</button>
-    <button class="tab-button" data-tab="manageTab">🔍 Manage Certificates</button>
-    
-  </div>
-
-
-
-  <!-- Register Certificate Section -->
-  <div class="tab-content active" id="registerTab">
+<div class="tab-content active" id="registerTab">
+  <div class="section-heading">
     <h2>Register Certificate</h2>
-    <input type="text" id="recipientName" placeholder="Recipient Name" />
-    <input type="text" id="title" placeholder="Certificate Title" />
-    <div id="previewArea">
-      <input type="file" id="certificateFile" placeholder="Choose a file"/>
-      <!-- <p id="cidDisplay" style="display: none;">Hang on, uploading to IPFS...</p> -->
-      
-    </div>
-
-    <p id="cidDisplay" style="display: none;">Hang on, uploading to IPFS...</p>
-
-    <!-- <input type="file" id="certificateFile" /> -->
-    <input type="text" id="externalId" placeholder="Optional External ID" />
-    
-
-        <!-- Loading Overlay -->
-        <div id="loadingOverlayRegister" style="display: none">
-          <div id="loadingIndicator">
-            <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
-            <p>Registering Certificate...</p>
-          </div>
-        </div>
-
-    <div id="registeredCert"></div>
-
-    <button class="button-action" id="registerBtn" disabled>Register Certificate</button>
-
+    <p>Upload a certificate file and anchor the certificate metadata to the contract.</p>
   </div>
 
+  <input type="text" id="recipientName" placeholder="Recipient name" />
+  <input type="text" id="title" placeholder="Certificate title" />
 
+  <div id="previewArea">
+    <input type="file" id="certificateFile" placeholder="Choose a file" />
+    <p class="upload-hint">Upload a certificate image or PDF for preview and IPFS storage.</p>
+  </div>
 
-  <!-- Manage Certificates Section -->
-  <div class="tab-content" id="manageTab">
-    <h2>My Issued Certificates</h2>
-    <input type="text" id="searchCertificates" placeholder="🔍 Search by Name or Title" />
+  <p id="cidDisplay" style="display: none;">Uploading to IPFS...</p>
+  <input type="text" id="externalId" placeholder="Optional external ID" />
 
-    <button class="button-action" id="loadCertsBtn">Refresh Issued Certificates</button>
-
-    <div id="certificateStats">
-      <p><strong>Total Certificates:</strong> <span id="totalCerts">0</span></p>
-      <p><strong>Revoked Certificates:</strong> <span id="revokedCerts">0</span></p>
+  <div id="loadingOverlayRegister" style="display: none">
+    <div id="loadingIndicator">
+      <span class="loader-dot"></span>
+      <p>Registering certificate...</p>
     </div>
-      <!-- Loading Overlay for Revoking Institution -->
+  </div>
+
+  <div id="registeredCert"></div>
+  <button class="button-action" id="registerBtn" disabled>Register Certificate</button>
+</div>
+
+<div class="tab-content" id="manageTab">
+  <div class="section-heading">
+    <h2>Issued Certificates</h2>
+    <p>Search and manage credentials issued by your institution wallet.</p>
+  </div>
+
+  <div class="input-row">
+    <input type="text" id="searchCertificates" placeholder="Search by name or title" />
+    <button class="button-action" id="loadCertsBtn">Refresh</button>
+  </div>
+
+  <div id="certificateStats">
+    <p><strong>Total Certificates</strong> <span id="totalCerts">0</span></p>
+    <p><strong>Revoked Certificates</strong> <span id="revokedCerts">0</span></p>
+  </div>
+
   <div id="loadingOverlayRevoke" style="display: none" class="loading-overlay">
     <div id="loadingIndicator">
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
-      <p>Revoking...</p>
+      <span class="loader-dot"></span>
+      <p>Revoking certificate...</p>
     </div>
   </div>
 
-    <div id="certificateList"></div>
-  </div>
+  <div id="certificateList"></div>
+</div>
 
-<!-- MODAL FOR Confirming CERTIFICATE ISSUANCE -->
 <div id="confirmCertModal" class="confirmModal">
   <div class="confirmModal-content">
     <h3>Confirm Certificate Issuance</h3>
     <p><strong>Recipient Name:</strong> <span id="confirmCertName"></span></p>
     <p><strong>Certificate Title:</strong> <span id="confirmCertTitle"></span></p>
     <p><strong>External ID:</strong> <span id="confirmCertExternalId"></span></p>
-    <div id="confirmCertPreview" style="margin-top: 10px;"></div>
+    <div id="confirmCertPreview"></div>
     <div class="modal-buttons">
       <button id="confirmCertYesBtn" class="button-action">Confirm</button>
       <button id="confirmCertNoBtn" class="button-secondary">Cancel</button>
@@ -92,8 +84,6 @@
   </div>
 </div>
 
-
-<!-- MODAL: Confirm Certificate Revocation -->
 <div id="confirmRevokeCertModal" class="confirmModal">
   <div class="confirmModal-content">
     <h3>Confirm Certificate Revocation</h3>
@@ -102,13 +92,10 @@
     <p><strong>Recipient Name:</strong> <span id="confirmRevokeName"></span></p>
     <p><strong>Certificate Title:</strong> <span id="confirmRevokeTitle"></span></p>
     <p><strong>External ID:</strong> <span id="confirmRevokeExternalId"></span></p>
-    <div id="confirmRevokePreview" style="margin-top: 10px;"></div>
+    <div id="confirmRevokePreview"></div>
     <div class="modal-buttons">
       <button id="confirmRevokeCertBtn" class="button-action">Yes, Revoke</button>
       <button id="cancelRevokeCertBtn" class="button-secondary">Cancel</button>
     </div>
   </div>
 </div>
-
-
-
