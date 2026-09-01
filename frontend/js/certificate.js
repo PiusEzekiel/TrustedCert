@@ -78,7 +78,7 @@ function renderError(message) {
     <div class="status-card status-card-error">
       <strong>Certificate details unavailable</strong>
       <p>${message}</p>
-      <a class="button-action detail-link" href="index.html#app">Return to verifier</a>
+      <a class="button-action detail-link" href="/#app">Return to verifier</a>
     </div>
   `;
 }
@@ -100,7 +100,7 @@ async function loadCertificateDetail() {
   try {
     await loadConfig();
     const provider = new ethers.providers.JsonRpcProvider(SEPOLIA_RPC_URL);
-    const abiResponse = await fetch("./abi/CertificateRegistry.json");
+    const abiResponse = await fetch("/abi/CertificateRegistry.json");
     const abiJson = await abiResponse.json();
     const contract = new ethers.Contract(CONTRACT_ADDRESS, abiJson.abi, provider);
     const cert = await contract.verifyCertificate(certId);

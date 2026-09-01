@@ -116,7 +116,7 @@ function renderVerificationError(message) {
 }
 
 function buildCertificateDetailLink(certId) {
-  return `certificate.html?id=${encodeURIComponent(certId)}`;
+  return `/certificate/?id=${encodeURIComponent(certId)}`;
 }
 
 function attachVerifyButton() {

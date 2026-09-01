@@ -132,7 +132,7 @@ const uniqueInstitutions = institutions.filter(
             <button class="copy-btn" type="button" data-copy-scope="admin" data-copy-value="${safeCertId}">Copy</button>
         </p>
                     <div class="cert-actions">
-                        <a class="button-secondary detail-link" href="certificate.html?id=${encodeURIComponent(certId)}">View trust details</a>
+                        <a class="button-secondary detail-link" href="/certificate/?id=${encodeURIComponent(certId)}">View trust details</a>
                     </div>
                 </div>
                 <div class="file-preview-container">

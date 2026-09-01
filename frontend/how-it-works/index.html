@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Learn how TrustedCert issues, stores, and verifies certificates with Ethereum, IPFS, and institution wallet roles."
+  />
+  <title>How TrustedCert Works</title>
+  <link rel="canonical" href="/how-it-works/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20260901-clean-routes">
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="/" class="branding-link" aria-label="TrustedCert home">
+      <div class="branding">
+        <img src="/images/trusted_cert_logo.png" alt="TrustedCert logo" class="logo" />
+        <div class="branding-text">
+          <h1>TrustedCert</h1>
+          <p>Decentralized credential trust layer</p>
+        </div>
+      </div>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="/#app">Verify</a>
+      <a href="/how-it-works/" aria-current="page">How it works</a>
+      <a href="/research/">Research</a>
+    </nav>
+
+    <a class="header-action" href="/#app">Launch verifier</a>
+  </header>
+
+  <main class="page-shell info-page">
+    <section class="info-hero">
+      <span class="eyebrow">System guide</span>
+      <h2>How TrustedCert turns a certificate into a verifiable record.</h2>
+      <p>
+        TrustedCert combines institution wallet roles, Ethereum smart-contract records,
+        and IPFS file storage so a certificate can be checked without relying on a
+        private email thread or manual registrar lookup.
+      </p>
+    </section>
+
+    <section class="grant-strip info-strip" aria-label="TrustedCert audiences">
+      <article class="grant-card">
+        <h3>For <mark class="mark-gold">verifiers</mark></h3>
+        <p>Paste a certificate ID and compare the returned recipient, title, issuer, and status.</p>
+      </article>
+      <article class="grant-card">
+        <h3>For <mark class="mark-green">institutions</mark></h3>
+        <p>Upload a certificate, pin the file, and write its metadata to the certificate registry.</p>
+      </article>
+      <article class="grant-card">
+        <h3>For <mark class="mark-blue">admins</mark></h3>
+        <p>Approve trusted issuer wallets, revoke access, and pause the registry if needed.</p>
+      </article>
+    </section>
+
+    <section class="process-grid" aria-label="TrustedCert process">
+      <article class="process-card">
+        <span>01</span>
+        <h3>Approve an issuer</h3>
+        <p>
+          A platform admin registers an institution name, description, and wallet address.
+          The smart contract grants that wallet the institution role.
+        </p>
+      </article>
+      <article class="process-card">
+        <span>02</span>
+        <h3>Upload the certificate</h3>
+        <p>
+          The institution uploads the certificate file through the backend. The backend
+          pins it to IPFS and returns the content identifier, keeping storage credentials private.
+        </p>
+      </article>
+      <article class="process-card">
+        <span>03</span>
+        <h3>Register metadata</h3>
+        <p>
+          The registrar submits the recipient name, certificate title, IPFS CID, and optional
+          external ID to the smart contract. The contract emits a certificate ID.
+        </p>
+      </article>
+      <article class="process-card">
+        <span>04</span>
+        <h3>Verify publicly</h3>
+        <p>
+          Anyone can enter the certificate ID to retrieve the on-chain record and open the
+          attached certificate preview from IPFS.
+        </p>
+      </article>
+    </section>
+
+    <section class="flow-panel" aria-label="Animated TrustedCert flow">
+      <div class="flow-node flow-node-issuer">
+        <span>Issuer</span>
+        <strong>Uploads certificate</strong>
+      </div>
+      <div class="flow-rail" aria-hidden="true">
+        <span></span>
+      </div>
+      <div class="flow-node flow-node-storage">
+        <span>IPFS</span>
+        <strong>Pins document</strong>
+      </div>
+      <div class="flow-rail" aria-hidden="true">
+        <span></span>
+      </div>
+      <div class="flow-node flow-node-chain">
+        <span>Sepolia</span>
+        <strong>Stores trust record</strong>
+      </div>
+      <div class="flow-rail" aria-hidden="true">
+        <span></span>
+      </div>
+      <div class="flow-node flow-node-verifier">
+        <span>Verifier</span>
+        <strong>Checks authenticity</strong>
+      </div>
+    </section>
+
+    <section class="architecture-panel">
+      <div class="section-heading">
+        <h2>What lives where</h2>
+        <p>Each layer has a narrow job, which keeps verification fast and tamper-resistant.</p>
+      </div>
+
+      <div class="architecture-table">
+        <div class="architecture-row">
+          <span>Frontend</span>
+          <strong>Verifier, institution dashboard, admin dashboard, wallet connection</strong>
+        </div>
+        <div class="architecture-row">
+          <span>Backend</span>
+          <strong>Public contract config and private IPFS upload proxy</strong>
+        </div>
+        <div class="architecture-row">
+          <span>Ethereum</span>
+          <strong>Issuer roles, certificate metadata, revocation status, platform pause control</strong>
+        </div>
+        <div class="architecture-row">
+          <span>IPFS</span>
+          <strong>Certificate file storage addressed by content identifier</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="architecture-panel">
+      <div class="section-heading">
+        <h2>Research foundation</h2>
+        <p>The product is informed by the supporting research behind TrustedCert.</p>
+      </div>
+      <a class="research-callout" href="research/">
+        <span>Open research document</span>
+        <strong>TrustedCert research and implementation notes</strong>
+      </a>
+    </section>
+
+    <section class="faq-panel">
+      <div class="section-heading">
+        <h2>Verification notes</h2>
+        <p>Details that help users interpret a certificate result correctly.</p>
+      </div>
+
+      <div class="faq-list">
+        <details open>
+          <summary>What proves the certificate is authentic?</summary>
+          <p>The certificate ID resolves to a smart-contract record created by an approved institution wallet.</p>
+        </details>
+        <details>
+          <summary>What does revocation mean?</summary>
+          <p>The issuing institution marked the certificate as no longer active. The record remains visible, but the status changes.</p>
+        </details>
+        <details>
+          <summary>Why is the file stored separately?</summary>
+          <p>The file is stored on IPFS so the blockchain only needs to keep compact metadata and the content identifier.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      TrustedCert &copy; 2025 | Built for African Higher-Ed
+      <a href="/#app">Verify a certificate</a>
+      <a href="research/">Research paper</a>
+    </p>
+  </footer>
+</body>
+</html>
+

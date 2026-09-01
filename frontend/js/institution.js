@@ -318,7 +318,7 @@ function enableInstitutionActions() {
             <button class="copy-btn" type="button" data-copy-scope="institution" data-copy-value="${safeId}">Copy</button>
           </p>
           <div class="cert-actions">
-            <a class="button-secondary detail-link" href="certificate.html?id=${encodeURIComponent(id)}">View trust details</a>
+            <a class="button-secondary detail-link" href="/certificate/?id=${encodeURIComponent(id)}">View trust details</a>
           </div>
           
       </div>
@@ -386,7 +386,7 @@ async function loadCertificates() {
         <p><strong>Issued:</strong> ${issueDate}</p>
         <p><strong>Status:</strong> ${cert.isRevoked ? "❌ Revoked" : "✅ Active"}</p>
         <div class="cert-actions">
-          <a class="button-secondary detail-link" href="certificate.html?id=${encodeURIComponent(id)}">View trust details</a>
+          <a class="button-secondary detail-link" href="/certificate/?id=${encodeURIComponent(id)}">View trust details</a>
           <button class="button-action revokeCerts-button" type="button" data-revoke-cert-id="${safeId}">Revoke</button>
         </div>
       </div>

@@ -3,7 +3,7 @@
 const API_BASE_URL = "https://trustedcert-backend.onrender.com";
 const SEPOLIA_CHAIN_ID = 11155111;
 const SEPOLIA_CHAIN_ID_HEX = "0xaa36a7";
-const APP_VERSION = "20260901-mobile-nav";
+const APP_VERSION = "20260901-clean-routes";
 
 let CONTRACT_ADDRESS;
 let activeRoleScript;
@@ -71,6 +71,10 @@ async function ensureSepoliaNetwork() {
 }
 
 window.onload = async () => {
+  if (window.location.pathname.endsWith("/index.html")) {
+    window.history.replaceState(null, "", `/${window.location.search}${window.location.hash}`);
+  }
+
   document.getElementById("loadingOverlayFirst").style.display = "flex"; // Show loading animation
   await loadConfig();
   document.getElementById("loadingOverlayFirst").style.display = "none"; // Hide loading animation
