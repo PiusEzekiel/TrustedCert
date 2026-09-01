@@ -8,6 +8,15 @@
     content="Review a TrustedCert certificate record, issuer details, revocation status, and IPFS document proof."
   />
   <title>TrustedCert | Certificate Trust Details</title>
+  <script>
+    try {
+      const theme = localStorage.getItem("trustedcert-theme");
+      if (theme === "light" || theme === "dark") {
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      }
+    } catch (error) {}
+  </script>
   <link rel="canonical" href="/certificate/" />
   <script
     src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"
@@ -23,7 +32,7 @@
     integrity="sha384-GSJP6bR4yv1SbLGhL+ntxb4LDi6RC5j8eM8OAh5lwPYdvj9cflIWJiFZdAFr2gyP"
     crossorigin="anonymous"
   />
-  <link rel="stylesheet" href="/styles.css?v=20260901-no-app-hash">
+  <link rel="stylesheet" href="/styles.css?v=20260901-theme-toggle">
 </head>
 
 <body class="dashboard-active">
@@ -44,7 +53,15 @@
       <a href="/research/">Research</a>
     </nav>
 
-    <a class="header-action" href="/">Launch verifier</a>
+    <div class="header-controls">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false">
+        <span class="theme-toggle-track" aria-hidden="true">
+          <span class="theme-toggle-thumb"></span>
+        </span>
+        <span class="theme-toggle-text" data-theme-toggle-label>Dark</span>
+      </button>
+      <a class="header-action" href="/">Launch verifier</a>
+    </div>
   </header>
 
   <main class="page-shell">
@@ -68,7 +85,8 @@
     integrity="sha384-HV48j9xMNfX80v1dhiML90VeD4a38xrehnBK+dNSSe8P4fija/zP36u52q7TpB6O"
     crossorigin="anonymous"
   ></script>
-  <script defer type="module" src="/js/certificate.js?v=20260901-no-app-hash"></script>
+  <script defer src="/js/theme.js?v=20260901-theme-toggle"></script>
+  <script defer type="module" src="/js/certificate.js?v=20260901-theme-toggle"></script>
 </body>
 </html>
 

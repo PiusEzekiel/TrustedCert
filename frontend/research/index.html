@@ -8,11 +8,20 @@
     content="Read the research behind TrustedCert's blockchain certificate issuance and verification system."
   />
   <title>TrustedCert | Research</title>
+  <script>
+    try {
+      const theme = localStorage.getItem("trustedcert-theme");
+      if (theme === "light" || theme === "dark") {
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      }
+    } catch (error) {}
+  </script>
   <link rel="canonical" href="/research/" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260901-no-app-hash">
+  <link rel="stylesheet" href="/styles.css?v=20260901-theme-toggle">
 </head>
 
 <body class="dashboard-active">
@@ -33,7 +42,15 @@
       <a href="/research/" aria-current="page">Research</a>
     </nav>
 
-    <a class="header-action" href="/">Launch verifier</a>
+    <div class="header-controls">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false">
+        <span class="theme-toggle-track" aria-hidden="true">
+          <span class="theme-toggle-thumb"></span>
+        </span>
+        <span class="theme-toggle-text" data-theme-toggle-label>Dark</span>
+      </button>
+      <a class="header-action" href="/">Launch verifier</a>
+    </div>
   </header>
 
   <main class="page-shell research-page">
@@ -200,5 +217,6 @@
       <a href="/how-it-works/">How it works</a>
     </p>
   </footer>
+  <script defer src="/js/theme.js?v=20260901-theme-toggle"></script>
 </body>
 </html>

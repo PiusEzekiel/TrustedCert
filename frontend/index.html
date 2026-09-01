@@ -8,6 +8,15 @@
     content="TrustedCert helps African higher-education institutions issue and verify tamper-resistant certificates on-chain."
   />
   <title>TrustedCert | Certificate Verification</title>
+  <script>
+    try {
+      const theme = localStorage.getItem("trustedcert-theme");
+      if (theme === "light" || theme === "dark") {
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      }
+    } catch (error) {}
+  </script>
   <script
     src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"
     integrity="sha384-Htz1SE4Sl5aitpvFgr2j0sfsGUIuSXI6t8hEyrlQ93zflEF3a29bH2AvkUROUw7J"
@@ -22,7 +31,7 @@
     integrity="sha384-GSJP6bR4yv1SbLGhL+ntxb4LDi6RC5j8eM8OAh5lwPYdvj9cflIWJiFZdAFr2gyP"
     crossorigin="anonymous"
   />
-  <link rel="stylesheet" href="styles.css?v=20260901-no-app-hash">
+  <link rel="stylesheet" href="styles.css?v=20260901-theme-toggle">
 </head>
 
 <body>
@@ -90,6 +99,12 @@
       <div class="wallet-container">
         <span id="networkBadge" class="network-badge">Sepolia ready</span>
         <button id="switchNetworkBtn" class="network-switch" type="button" hidden>Switch network</button>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false">
+          <span class="theme-toggle-track" aria-hidden="true">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+          <span class="theme-toggle-text" data-theme-toggle-label>Dark</span>
+        </button>
         <button id="connectBtn" type="button">
           <span id="walletStatus">Connect wallet</span>
         </button>
@@ -187,6 +202,7 @@
     integrity="sha384-HV48j9xMNfX80v1dhiML90VeD4a38xrehnBK+dNSSe8P4fija/zP36u52q7TpB6O"
     crossorigin="anonymous"
   ></script>
-  <script defer type="module" src="js/index.js?v=20260901-no-app-hash"></script>
+  <script defer src="js/theme.js?v=20260901-theme-toggle"></script>
+  <script defer type="module" src="js/index.js?v=20260901-theme-toggle"></script>
 </body>
 </html>
