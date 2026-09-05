@@ -32,7 +32,7 @@
     integrity="sha384-GSJP6bR4yv1SbLGhL+ntxb4LDi6RC5j8eM8OAh5lwPYdvj9cflIWJiFZdAFr2gyP"
     crossorigin="anonymous"
   />
-  <link rel="stylesheet" href="/styles.css?v=20260905-header-overlap">
+  <link rel="stylesheet" href="/styles.css?v=20260905-design-polish">
 </head>
 
 <body class="dashboard-active">
@@ -47,21 +47,36 @@
       </div>
     </a>
 
-    <nav class="site-nav" aria-label="Primary navigation">
-      <a href="/">Verify</a>
-      <a href="/how-it-works/">How it works</a>
-      <a href="/research/">Research</a>
-    </nav>
+    <button
+      class="menu-toggle"
+      id="mobileMenuToggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobileHeaderPanel"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-    <div class="header-controls">
-      <span class="network-badge">Sepolia ready</span>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false">
-        <span class="theme-toggle-track" aria-hidden="true">
-          <span class="theme-toggle-thumb"></span>
-        </span>
-        <span class="visually-hidden" data-theme-toggle-label>Dark</span>
-      </button>
-      <a class="header-action" href="/">Launch verifier</a>
+    <div class="header-panel" id="mobileHeaderPanel">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/">Verify</a>
+        <a href="/how-it-works/">How it works</a>
+        <a href="/research/">Research</a>
+      </nav>
+
+      <div class="header-controls">
+        <span class="network-badge">Sepolia testnet</span>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false">
+          <span class="theme-toggle-track" aria-hidden="true">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+          <span class="visually-hidden" data-theme-toggle-label>Dark</span>
+        </button>
+        <a class="header-action" href="/">Launch verifier</a>
+      </div>
     </div>
   </header>
 
@@ -75,10 +90,14 @@
   </main>
 
   <footer>
-    <p>
-      TrustedCert &copy; 2025 | Built for African Higher-Ed
-      <a href="/">Verify another certificate</a>
-    </p>
+    <div class="footer-content">
+      <p>TrustedCert &copy; 2025 <span>Built for African Higher-Ed</span></p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/">Verify another certificate</a>
+        <a href="/how-it-works/">How it works</a>
+        <a href="/research/">Research paper</a>
+      </nav>
+    </div>
   </footer>
 
   <script
@@ -86,8 +105,9 @@
     integrity="sha384-HV48j9xMNfX80v1dhiML90VeD4a38xrehnBK+dNSSe8P4fija/zP36u52q7TpB6O"
     crossorigin="anonymous"
   ></script>
-  <script defer src="/js/theme.js?v=20260905-header-overlap"></script>
-  <script defer type="module" src="/js/certificate.js?v=20260905-header-overlap"></script>
+  <script defer src="/js/header.js?v=20260905-design-polish"></script>
+  <script defer src="/js/theme.js?v=20260905-design-polish"></script>
+  <script defer type="module" src="/js/certificate.js?v=20260905-design-polish"></script>
 </body>
 </html>
 

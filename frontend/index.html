@@ -31,7 +31,7 @@
     integrity="sha384-GSJP6bR4yv1SbLGhL+ntxb4LDi6RC5j8eM8OAh5lwPYdvj9cflIWJiFZdAFr2gyP"
     crossorigin="anonymous"
   />
-  <link rel="stylesheet" href="styles.css?v=20260905-header-overlap">
+  <link rel="stylesheet" href="styles.css?v=20260905-design-polish">
 </head>
 
 <body>
@@ -171,24 +171,6 @@
       </div>
     </section>
 
-    <section class="grant-strip" aria-label="TrustedCert pathways">
-      <article class="grant-card">
-        <h3>Verify records for <mark class="mark-gold">employers</mark></h3>
-        <p>Confirm certificate authenticity without contacting the issuing office.</p>
-        <a href="/" class="grant-pill grant-pill-gold" data-scroll-target="app">Verify now</a>
-      </article>
-      <article class="grant-card">
-        <h3>Issue records for <mark class="mark-green">academics</mark></h3>
-        <p>Give registrars a wallet-based workspace for anchored certificate issuance.</p>
-        <button class="grant-pill grant-pill-green" id="grantConnectBtn" type="button">Connect</button>
-      </article>
-      <article class="grant-card">
-        <h3>Use <mark class="mark-blue">committed trust</mark> on-chain</h3>
-        <p>Keep issuer roles, certificate status, and document previews in one flow.</p>
-        <a href="/" class="grant-pill grant-pill-blue" data-scroll-target="app">Explore</a>
-      </article>
-    </section>
-
     <div id="loadingOverlayFirst" style="display: none">
       <div id="loadingIndicator">
         <span class="loader-dot"></span>
@@ -205,14 +187,35 @@
 
     <div id="app_header"></div>
     <section id="app" aria-live="polite"></section>
+
+    <section class="grant-strip" aria-label="TrustedCert pathways">
+      <article class="grant-card">
+        <h3>Verify records for <mark class="mark-gold">employers</mark></h3>
+        <p>Confirm certificate authenticity without contacting the issuing office.</p>
+        <a href="/" class="grant-pill grant-pill-gold" data-scroll-target="app">Verify now</a>
+      </article>
+      <article class="grant-card">
+        <h3>Issue records for <mark class="mark-green">academics</mark></h3>
+        <p>Give registrars a wallet-based workspace for anchored certificate issuance.</p>
+        <button class="grant-pill grant-pill-green" id="grantConnectBtn" type="button">Connect</button>
+      </article>
+      <article class="grant-card">
+        <h3>Use <mark class="mark-blue">committed trust</mark> on-chain</h3>
+        <p>Keep issuer roles, certificate status, and document previews in one flow.</p>
+        <a href="/how-it-works/" class="grant-pill grant-pill-blue">Explore</a>
+      </article>
+    </section>
   </main>
 
   <footer>
-    <p>
-      TrustedCert &copy; 2025 | Built for African Higher-Ed
-      <a href="#" id="openPolicyModal">End-User License Agreement & Privacy Policy</a>
-      <a href="research/">Research paper</a>
-    </p>
+    <div class="footer-content">
+      <p>TrustedCert &copy; 2025 <span>Built for African Higher-Ed</span></p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#" id="openPolicyModal">Policy</a>
+        <a href="/how-it-works/">How it works</a>
+        <a href="/research/">Research paper</a>
+      </nav>
+    </div>
   </footer>
 
   <script
@@ -220,7 +223,8 @@
     integrity="sha384-HV48j9xMNfX80v1dhiML90VeD4a38xrehnBK+dNSSe8P4fija/zP36u52q7TpB6O"
     crossorigin="anonymous"
   ></script>
-  <script defer src="js/theme.js?v=20260905-header-overlap"></script>
-  <script defer type="module" src="js/index.js?v=20260905-header-overlap"></script>
+  <script defer src="js/header.js?v=20260905-design-polish"></script>
+  <script defer src="js/theme.js?v=20260905-design-polish"></script>
+  <script defer type="module" src="js/index.js?v=20260905-design-polish"></script>
 </body>
 </html>

@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260905-header-overlap">
+  <link rel="stylesheet" href="/styles.css?v=20260905-design-polish">
 </head>
 
 <body class="dashboard-active">
@@ -36,21 +36,36 @@
       </div>
     </a>
 
-    <nav class="site-nav" aria-label="Primary navigation">
-      <a href="/">Verify</a>
-      <a href="/how-it-works/">How it works</a>
-      <a href="/research/" aria-current="page">Research</a>
-    </nav>
+    <button
+      class="menu-toggle"
+      id="mobileMenuToggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobileHeaderPanel"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-    <div class="header-controls">
-      <span class="network-badge">Sepolia ready</span>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false">
-        <span class="theme-toggle-track" aria-hidden="true">
-          <span class="theme-toggle-thumb"></span>
-        </span>
-        <span class="visually-hidden" data-theme-toggle-label>Dark</span>
-      </button>
-      <a class="header-action" href="/">Launch verifier</a>
+    <div class="header-panel" id="mobileHeaderPanel">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/">Verify</a>
+        <a href="/how-it-works/">How it works</a>
+        <a href="/research/" aria-current="page">Research</a>
+      </nav>
+
+      <div class="header-controls">
+        <span class="network-badge">Sepolia testnet</span>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false">
+          <span class="theme-toggle-track" aria-hidden="true">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+          <span class="visually-hidden" data-theme-toggle-label>Dark</span>
+        </button>
+        <a class="header-action" href="/">Launch verifier</a>
+      </div>
     </div>
   </header>
 
@@ -76,8 +91,17 @@
       </div>
     </section>
 
+    <nav class="research-toc" aria-label="Research sections">
+      <a href="#abstract">Abstract</a>
+      <a href="#background">Background</a>
+      <a href="#objectives">Objectives</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#testing">Testing</a>
+      <a href="#conclusion">Conclusion</a>
+    </nav>
+
     <article class="research-viewer research-paper" aria-label="TrustedCert research paper">
-      <section class="paper-section">
+      <section class="paper-section" id="abstract">
         <p class="paper-label">Abstract</p>
         <h3>Blockchain-based academic credential verification for African higher education</h3>
         <p>
@@ -94,7 +118,7 @@
         </p>
       </section>
 
-      <section class="paper-section">
+      <section class="paper-section" id="background">
         <p class="paper-label">Background</p>
         <h3>The credential trust problem</h3>
         <p>
@@ -109,7 +133,7 @@
         </p>
       </section>
 
-      <section class="paper-section">
+      <section class="paper-section" id="problem-statement">
         <p class="paper-label">Problem Statement</p>
         <h3>Existing platforms are often centralized, costly, or hard to adapt</h3>
         <p>
@@ -120,7 +144,7 @@
         </p>
       </section>
 
-      <section class="paper-section">
+      <section class="paper-section" id="objectives">
         <p class="paper-label">Objectives</p>
         <h3>What the system sets out to prove</h3>
         <ul>
@@ -132,7 +156,7 @@
         </ul>
       </section>
 
-      <section class="paper-section">
+      <section class="paper-section" id="methodology">
         <p class="paper-label">Methodology</p>
         <h3>Agile development with design-based evaluation</h3>
         <p>
@@ -144,7 +168,7 @@
         </p>
       </section>
 
-      <section class="paper-section">
+      <section class="paper-section" id="architecture">
         <p class="paper-label">System Architecture</p>
         <h3>A modular trust stack</h3>
         <div class="paper-table">
@@ -156,7 +180,7 @@
         </div>
       </section>
 
-      <section class="paper-section">
+      <section class="paper-section" id="testing">
         <p class="paper-label">Testing</p>
         <h3>Validation across roles and workflows</h3>
         <p>
@@ -167,7 +191,7 @@
         </p>
       </section>
 
-      <section class="paper-section">
+      <section class="paper-section" id="conclusion">
         <p class="paper-label">Conclusion</p>
         <h3>A practical foundation for tamper-resistant academic records</h3>
         <p>
@@ -178,7 +202,7 @@
         </p>
       </section>
 
-      <section class="paper-section">
+      <section class="paper-section" id="references">
         <p class="paper-label">Selected References</p>
         <ol>
           <li>OpenZeppelin Contracts Documentation.</li>
@@ -212,12 +236,15 @@
   </main>
 
   <footer>
-    <p>
-      TrustedCert &copy; 2025 | Built for African Higher-Ed
-      <a href="/">Verify a certificate</a>
-      <a href="/how-it-works/">How it works</a>
-    </p>
+    <div class="footer-content">
+      <p>TrustedCert &copy; 2025 <span>Built for African Higher-Ed</span></p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/">Verify a certificate</a>
+        <a href="/how-it-works/">How it works</a>
+      </nav>
+    </div>
   </footer>
-  <script defer src="/js/theme.js?v=20260905-header-overlap"></script>
+  <script defer src="/js/header.js?v=20260905-design-polish"></script>
+  <script defer src="/js/theme.js?v=20260905-design-polish"></script>
 </body>
 </html>

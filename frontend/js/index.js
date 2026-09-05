@@ -3,7 +3,7 @@
 const API_BASE_URL = "https://trustedcert-backend.onrender.com";
 const SEPOLIA_CHAIN_ID = 11155111;
 const SEPOLIA_CHAIN_ID_HEX = "0xaa36a7";
-const APP_VERSION = "20260905-header-overlap";
+const APP_VERSION = "20260905-design-polish";
 
 let CONTRACT_ADDRESS;
 let activeRoleScript;
@@ -80,19 +80,6 @@ function normalizeMainUrl() {
   }
 }
 
-function attachCleanScrollLinks() {
-  document.querySelectorAll("[data-scroll-target]").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      const target = document.getElementById(link.dataset.scrollTarget);
-      if (!target) return;
-
-      event.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.history.replaceState(null, "", `/${window.location.search}`);
-    });
-  });
-}
-
 window.onload = async () => {
   normalizeMainUrl();
 
@@ -104,41 +91,6 @@ window.onload = async () => {
   const connectBtn = document.getElementById("connectBtn");
   const grantConnectBtn = document.getElementById("grantConnectBtn");
   const switchNetworkBtn = document.getElementById("switchNetworkBtn");
-  const siteHeader = document.querySelector(".site-header");
-  const mobileMenuToggle = document.getElementById("mobileMenuToggle");
-  const mobileHeaderPanel = document.getElementById("mobileHeaderPanel");
-  const walletDisplay = document.getElementById("walletAddress");
-
-  function setMobileMenuOpen(isOpen) {
-    if (!siteHeader || !mobileMenuToggle || !mobileHeaderPanel) return;
-
-    siteHeader.classList.toggle("is-menu-open", isOpen);
-    mobileHeaderPanel.classList.toggle("is-open", isOpen);
-    mobileMenuToggle.setAttribute("aria-expanded", String(isOpen));
-    mobileMenuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
-  }
-
-  mobileMenuToggle?.addEventListener("click", () => {
-    setMobileMenuOpen(!siteHeader?.classList.contains("is-menu-open"));
-  });
-
-  mobileHeaderPanel?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => setMobileMenuOpen(false));
-  });
-
-  attachCleanScrollLinks();
-
-  document.addEventListener("click", (event) => {
-    if (!siteHeader?.classList.contains("is-menu-open")) return;
-    if (siteHeader.contains(event.target)) return;
-    setMobileMenuOpen(false);
-  });
-
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      setMobileMenuOpen(false);
-    }
-  });
 
   grantConnectBtn?.addEventListener("click", () => {
     connectBtn?.click();
@@ -191,7 +143,12 @@ window.onload = async () => {
     const address = await signer.getAddress();
     // ✅ Truncate and update button text
     const truncated = `${address.substring(0, 6)}...${address.slice(-4)}`;
-    connectBtn.innerText = `🟢 ${truncated}`;
+    const walletStatusText = document.getElementById("walletStatus");
+    if (walletStatusText) {
+      walletStatusText.textContent = truncated;
+    } else {
+      connectBtn.textContent = truncated;
+    }
 
     // Fetch contract ABI and instantiate it
     const abiRes = await fetch("./abi/CertificateRegistry.json");
@@ -200,7 +157,7 @@ window.onload = async () => {
     console.log("✅ Using contract address:", CONTRACT_ADDRESS);
 
     showToast("✅ Wallet connected!", "success");
-    setMobileMenuOpen(false);
+    window.TrustedCertHeader?.setMenuOpen(false);
 
 
 
