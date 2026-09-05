@@ -3,7 +3,7 @@
 const API_BASE_URL = "https://trustedcert-backend.onrender.com";
 const SEPOLIA_CHAIN_ID = 11155111;
 const SEPOLIA_CHAIN_ID_HEX = "0xaa36a7";
-const APP_VERSION = "20260905-header-redesign";
+const APP_VERSION = "20260905-header-overlap";
 
 let CONTRACT_ADDRESS;
 let activeRoleScript;

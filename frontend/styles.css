@@ -2267,37 +2267,45 @@ html[data-theme="light"] .upload-preview iframe {
   background: #ffffff;
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 1280px) {
   .site-header {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px 16px;
+    width: min(1320px, calc(100% - 32px));
   }
 
   .header-panel {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    width: 100%;
-    margin-left: 0;
+    display: contents;
   }
 
-  .branding-link,
-  .site-header > .site-nav,
-  .site-header > .header-controls,
-  .header-panel > .site-nav,
-  .header-panel > .wallet-container {
+  .branding-link {
     grid-column: 1;
+    grid-row: 1;
+  }
+
+  .site-header > .site-nav,
+  .header-panel > .site-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
     justify-self: stretch;
+  }
+
+  .site-header > .header-controls,
+  .header-panel > .wallet-container {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
   }
 
   .site-nav {
     width: 100%;
+    overflow: hidden;
   }
 
   .wallet-container,
   .header-controls {
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
   }
 }
 
@@ -2342,6 +2350,7 @@ html[data-theme="light"] .upload-preview iframe {
   .header-panel > .site-nav,
   .header-panel > .wallet-container {
     grid-column: 1;
+    grid-row: auto;
     justify-self: stretch;
   }
 
